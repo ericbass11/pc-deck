@@ -1,0 +1,13 @@
+# chave de pareamento do celular: nunca versionar
+.token
+**/.token
+
+# runtime do Impeccable (configs e superfícies continuam versionados)
+.impeccable/questions/
+.impeccable/mocks/
+.impeccable/config.local.json
+
+node_modules/
+*.log
+Thumbs.db
+desktop.ini

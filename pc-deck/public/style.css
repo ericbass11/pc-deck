@@ -1,0 +1,399 @@
+@font-face { font-family: "Barlow Condensed"; font-weight: 500; font-display: block; src: url("/fonts/barlow-condensed-500.woff2") format("woff2"); }
+@font-face { font-family: "Barlow Condensed"; font-weight: 600; font-display: block; src: url("/fonts/barlow-condensed-600.woff2") format("woff2"); }
+@font-face { font-family: "Barlow Condensed"; font-weight: 700; font-display: block; src: url("/fonts/barlow-condensed-700.woff2") format("woff2"); }
+
+/* PC Deck — o celular como um Stream Deck sóbrio: chassi preto fosco, teclas LCD recuadas. */
+:root {
+  --room: #030304;
+  --chassis-hi: #17181b;
+  --chassis: #0e0f11;
+  --chassis-lo: #08090a;
+  --cap-hi: #222428;
+  --cap-lo: #15161a;
+  --lcd: #020203;
+  --print: #9aa0a8;        /* serigrafia do chassi */
+  --print-dim: #878d96;
+  --text: #f1f3f5;
+  --ok: #34d17a;
+  --warn: #f2b33d;
+  --err: #ff4d4f;
+  --font-print: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-ui: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--room);
+  color: var(--text);
+  font: 500 15px/1.3 var(--font-ui);
+  -webkit-user-select: none;
+  user-select: none;
+  overscroll-behavior: none;
+}
+
+::selection { background: #2b2e33; color: var(--text); }
+
+body {
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--chassis-lo);
+}
+
+/* ---------- chassi: o próprio celular vira o aparelho, de borda a borda ---------- */
+.device {
+  --gap: clamp(9px, 2.8vw, 14px);
+  --pad: clamp(14px, 4.5vw, 22px);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  padding:
+    max(var(--pad), env(safe-area-inset-top)) max(var(--pad), env(safe-area-inset-right))
+    max(var(--pad), env(safe-area-inset-bottom)) max(var(--pad), env(safe-area-inset-left));
+  background: linear-gradient(180deg, var(--chassis-hi) 0%, var(--chassis) 18%, var(--chassis-lo) 100%);
+}
+
+.silkscreen {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  width: var(--block-w);
+  height: var(--head-h);
+  margin-bottom: var(--head-gap);
+  flex: none;
+}
+
+.wordmark {
+  font: 700 clamp(15px, 4.4vw, 18px)/1 var(--font-print);
+  letter-spacing: 0.22em;
+  padding-left: 0.22em; /* compensa o tracking para centrar */
+  color: var(--print);
+  text-transform: uppercase;
+}
+
+.power {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 44px;
+  margin-left: -10px;
+  padding: 0 10px;
+  border: 0;
+  background: none;
+  color: var(--print-dim);
+  font: 600 12px/1 var(--font-print);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  --on: #3a3d42;
+  /* cúpula do LED: ponto de luz no topo, sem halo */
+  background: radial-gradient(circle at 45% 28%, rgba(255, 255, 255, 0.4) 0 10%, transparent 30%), var(--on);
+  box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.45), 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition: background-color 300ms ease;
+}
+.power.online .led { --on: var(--ok); }
+.power.offline .led { --on: var(--err); }
+.power:focus-visible { outline: 2px solid var(--print); outline-offset: 2px; border-radius: 6px; }
+
+.fs-btn {
+  justify-self: end;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-right: -13px;
+  border: 0;
+  background: none;
+  color: var(--print-dim);
+  cursor: pointer;
+}
+.fs-btn[hidden] { display: none; }
+.fs-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.fs-btn .fs-exit { display: none; }
+.fs-btn.on .fs-enter { display: none; }
+.fs-btn.on .fs-exit { display: inline; }
+.fs-btn:active { color: var(--print); }
+.fs-btn:focus-visible { outline: 2px solid var(--print); outline-offset: 0; border-radius: 6px; }
+
+/* ---------- faixa LCD (CPU | RAM | GPU) ---------- */
+.strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: var(--gap);
+  border-radius: clamp(12px, 3.6vw, 16px);
+  background: var(--lcd);
+  box-shadow:
+    inset 0 2px 6px rgba(0, 0, 0, 0.9),
+    0 1px 0 rgba(255, 255, 255, 0.05);              /* borda do recorte no chassi */
+  overflow: hidden;
+  position: relative;
+}
+.strip::after { /* vidro */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(170deg, rgba(255, 255, 255, 0.05) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.strip-msg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  margin: 0;
+  padding: 10px 16px;
+  font: 500 15px/1.25 var(--font-print);
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+.strip-msg b {
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--err);
+}
+.strip.msg .strip-msg { display: flex; }
+.strip.msg .seg { visibility: hidden; }
+
+.seg {
+  --level: var(--ok);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "label value" "bar bar" "detail detail";
+  align-items: baseline;
+  row-gap: 7px;
+  padding: 11px clamp(10px, 3vw, 14px) 10px;
+}
+.seg + .seg { border-left: 1px solid #16181b; }
+.seg.warn { --level: var(--warn); }
+.seg.hot { --level: var(--err); }
+
+.seg-label {
+  grid-area: label;
+  font: 600 12px/1 var(--font-print);
+  letter-spacing: 0.14em;
+  color: var(--print-dim);
+}
+.seg-value {
+  grid-area: value;
+  font: 600 clamp(22px, 6.6vw, 28px)/0.9 var(--font-print);
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+.seg-value i { font-style: normal; font-size: 0.55em; color: var(--print-dim); margin-left: 1px; }
+.seg-bar {
+  grid-area: bar;
+  height: 3px;
+  border-radius: 2px;
+  background: #15171a;
+  overflow: hidden;
+}
+.seg-bar span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--level);
+  transition: width 700ms cubic-bezier(0.16, 1, 0.3, 1), background-color 300ms ease;
+}
+.seg-detail {
+  grid-area: detail;
+  font: 500 11.5px/1 var(--font-print);
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--print-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---------- teclas ---------- */
+/* Faixa LCD + teclas formam um bloco centrado no resto da tela.
+   A tecla é o maior quadrado que cabe; --k é resolvido nos filhos, contra este container. */
+.keys-area {
+  --cols: 3;
+  --rows: 5;
+  --strip-h: 80px;
+  --head-h: 36px;
+  --head-gap: 8px;
+  --k: min(
+    (100cqw - (var(--cols) - 1) * var(--gap)) / var(--cols),
+    (100cqh - var(--head-h) - var(--head-gap) - var(--strip-h) - var(--rows) * var(--gap)) / var(--rows),
+    170px
+  );
+  --block-w: calc(var(--cols) * var(--k) + (var(--cols) - 1) * var(--gap));
+  flex: 1;
+  min-height: 0;
+  container-type: size;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.keys-area .strip {
+  width: var(--block-w);
+  height: var(--strip-h);
+  flex: none;
+}
+.keys {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), var(--k));
+  grid-auto-rows: var(--k);
+  gap: var(--gap);
+}
+
+.key {
+  position: relative;
+  width: var(--k);
+  height: var(--k);
+  padding: 7%;
+  border: 0;
+  border-radius: 20%;
+  background: linear-gradient(180deg, var(--cap-hi), var(--cap-lo));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 1px 1px rgba(0, 0, 0, 0.9),
+    0 4px 8px -2px rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform 70ms ease-out, box-shadow 70ms ease-out;
+}
+
+.lcd {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 15%;
+  background: var(--lcd);
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+}
+.lcd::after { /* reflexo do vidro sobre a tela */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.02) 38%, transparent 39%);
+  pointer-events: none;
+}
+.lcd img {
+  width: 66%;
+  height: 66%;
+  object-fit: contain;
+  transition: filter 160ms ease, transform 160ms ease;
+  -webkit-user-drag: none;
+}
+
+/* curso da tecla */
+.key:active:not(:disabled), .key.pressed {
+  transform: translateY(3px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 0 0 rgba(0, 0, 0, 0.9),
+    0 1px 2px rgba(0, 0, 0, 0.8);
+}
+.key:active:not(:disabled) .lcd img, .key.pressed .lcd img { filter: brightness(0.75); }
+
+/* resposta do PC: a própria tela da tecla reage */
+.lcd .flash {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+}
+.key.busy .lcd img { filter: brightness(0.55); }
+.key.ok .flash { animation: flash-ok 650ms cubic-bezier(0.16, 1, 0.3, 1); }
+.key.err .flash { animation: flash-err 900ms cubic-bezier(0.16, 1, 0.3, 1); }
+@keyframes flash-ok {
+  0% { opacity: 1; background: radial-gradient(circle, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.08) 70%); }
+  100% { opacity: 0; }
+}
+@keyframes flash-err {
+  0%, 60% { opacity: 1; background: rgba(255, 77, 79, 0.42); }
+  100% { opacity: 0; }
+}
+
+.key:disabled { cursor: default; }
+.key:focus-visible { outline: 2px solid var(--print); outline-offset: 3px; }
+
+/* ---------- páginas (só aparece com mais de uma) ---------- */
+.pages {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 10px;
+}
+.pages:empty { display: none; }
+.pages button {
+  min-width: 44px;
+  min-height: 40px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.pages button::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2a2d32;
+}
+.pages button[aria-current="page"]::before { background: var(--print); }
+
+/* ---------- não pareado: escrito na própria faixa LCD ---------- */
+.unpaired {
+  margin-top: var(--gap);
+  padding: 16px;
+  border-radius: clamp(12px, 3.6vw, 16px); /* mesmo recorte da faixa LCD */
+  background: var(--lcd);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.9);
+  color: var(--print);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.unpaired[hidden] { display: none; }
+.unpaired p { margin: 0; }
+.unpaired .unpaired-title {
+  margin-bottom: 4px;
+  font: 600 16px/1.2 var(--font-print);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+.unpaired code { color: var(--text); font-family: var(--font-ui); }
+
+/* ---------- paisagem: matriz 5×3, como o aparelho deitado ---------- */
+@media (orientation: landscape) {
+  .keys-area { --cols: 5; --rows: 3; }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .device { --pad: 12px; }
+  .keys-area { --strip-h: 54px; --head-h: 30px; --head-gap: 4px; }
+  .strip-msg { padding-block: 6px; gap: 2px; }
+  .seg { row-gap: 5px; padding-block: 8px 7px; }
+  .seg-detail { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .key, .lcd img, .seg-bar span { transition: none; }
+  .key.ok .flash, .key.err .flash { animation-duration: 1ms; }
+}

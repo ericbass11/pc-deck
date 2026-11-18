@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#08090a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>PC Deck</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/icon-192.png">
+  <link rel="apple-touch-icon" href="/icon-192.png">
+  <link rel="preload" href="/fonts/barlow-condensed-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="device">
+    <main class="keys-area">
+      <header class="silkscreen">
+        <button id="power" class="power" type="button" aria-label="Status da conexão: conectando. Toque para reconectar.">
+          <span class="led" aria-hidden="true"></span>
+          <span id="power-text">conectando</span>
+        </button>
+        <span class="wordmark" id="title">PC DECK</span>
+        <button id="fullscreen" class="fs-btn" type="button" aria-label="Tela cheia" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path class="fs-enter" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/><path class="fs-exit" d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>
+        </button>
+      </header>
+
+      <section class="strip" aria-label="Uso do PC">
+        <div class="seg" data-k="cpu">
+          <span class="seg-label">CPU</span>
+          <span class="seg-value"><b>–</b><i>%</i></span>
+          <span class="seg-bar"><span></span></span>
+          <span class="seg-detail">&nbsp;</span>
+        </div>
+        <div class="seg" data-k="ram">
+          <span class="seg-label">RAM</span>
+          <span class="seg-value"><b>–</b><i>%</i></span>
+          <span class="seg-bar"><span></span></span>
+          <span class="seg-detail">&nbsp;</span>
+        </div>
+        <div class="seg" data-k="gpu">
+          <span class="seg-label">GPU</span>
+          <span class="seg-value"><b>–</b><i>%</i></span>
+          <span class="seg-bar"><span></span></span>
+          <span class="seg-detail">&nbsp;</span>
+        </div>
+        <p class="strip-msg" id="strip-msg" role="status" aria-live="polite"><b></b><span></span></p>
+      </section>
+
+      <div id="keys" class="keys" role="group" aria-label="Teclas"></div>
+
+      <nav id="pages" class="pages" aria-label="Páginas"></nav>
+
+      <section id="unpaired" class="unpaired" hidden>
+        <p class="unpaired-title">Celular não pareado</p>
+        <p>No PC, abra <code>127.0.0.1:8787/pair</code> e escaneie o QR code com a câmera deste celular.</p>
+      </section>
+    </main>
+  </div>
+  <script src="/app.js"></script>
+</body>
+</html>

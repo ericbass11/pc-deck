@@ -1,0 +1,135 @@
+{
+  "title": "PC Deck",
+  "browsers": {
+    "chrome": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+    "edge": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
+  },
+  "pages": [
+    {
+      "name": "Trabalho",
+      "buttons": [
+        {
+          "id": "claude",
+          "label": "Claude",
+          "image": "/icons/claude.png",
+          "action": {
+            "type": "app",
+            "aumid": "AnthropicPBC.Claude_fnn82j28hfe8t!Claude"
+          }
+        },
+        {
+          "id": "codex",
+          "label": "Codex",
+          "image": "/icons/codex.png",
+          "action": {
+            "type": "app",
+            "aumid": "OpenAI.Codex_2p2nqsd0c76g0!App"
+          }
+        },
+        {
+          "id": "gemini",
+          "label": "Gemini",
+          "image": "/icons/gemini.png",
+          "action": {
+            "type": "app",
+            "aumid": "com.google.gemini.windows"
+          }
+        },
+        {
+          "id": "teams",
+          "label": "Microsoft Teams",
+          "image": "/icons/teams.png",
+          "action": {
+            "type": "app",
+            "aumid": "MSTeams_8wekyb3d8bbwe!MSTeams"
+          }
+        },
+        {
+          "id": "vscode",
+          "label": "VS Code",
+          "image": "/icons/vscode.png",
+          "action": {
+            "type": "exe",
+            "path": "%LOCALAPPDATA%\\Programs\\Microsoft VS Code\\Code.exe"
+          }
+        },
+        {
+          "id": "youtube",
+          "label": "YouTube",
+          "image": "/icons/youtube.png",
+          "action": {
+            "type": "url",
+            "browser": "chrome",
+            "url": "https://www.youtube.com/"
+          }
+        },
+        {
+          "id": "google",
+          "label": "Google",
+          "image": "/icons/google.png",
+          "action": {
+            "type": "url",
+            "browser": "chrome",
+            "url": "https://www.google.com/"
+          }
+        },
+        {
+          "id": "outlook",
+          "label": "Outlook",
+          "image": "/icons/outlook.png",
+          "action": {
+            "type": "url",
+            "browser": "edge",
+            "url": "https://outlook.office.com/mail/"
+          }
+        },
+        {
+          "id": "github",
+          "label": "GitHub",
+          "image": "/icons/github.svg",
+          "action": {
+            "type": "url",
+            "browser": "chrome",
+            "url": "https://github.com/"
+          }
+        },
+        {
+          "id": "explorer",
+          "label": "Explorador de Arquivos",
+          "image": "/icons/explorer.png",
+          "action": {
+            "type": "app",
+            "aumid": "Microsoft.Windows.Explorer"
+          }
+        },
+        {
+          "id": "snipping",
+          "label": "Ferramenta de Captura",
+          "image": "/icons/snipping.png",
+          "action": {
+            "type": "app",
+            "aumid": "Microsoft.ScreenSketch_8wekyb3d8bbwe!App"
+          }
+        },
+        {
+          "id": "termius",
+          "label": "Termius",
+          "image": "/icons/termius.png",
+          "action": {
+            "type": "app",
+            "aumid": "com.termius.mac"
+          }
+        },
+        {
+          "id": "docker",
+          "label": "Docker Desktop",
+          "image": "/icons/docker.png",
+          "action": {
+            "type": "app",
+            "aumid": "Docker.DockerForWindows.Settings"
+          }
+        }
+      ]
+    }
+  ]
+}

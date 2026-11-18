@@ -1,0 +1,442 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-18T12:58:54+00:00",
+  "title": "Design System: PC Deck",
+  "extensions": {
+    "colorMeta": {
+      "room": {
+        "role": "neutral",
+        "displayName": "Room Black",
+        "canonical": "#030304",
+        "tonalRamp": [
+          "#0b0b0d",
+          "#252527",
+          "#424244",
+          "#616164",
+          "#828285",
+          "#a5a5a8",
+          "#c9c9cc",
+          "#eeeef1"
+        ]
+      },
+      "chassis-hi": {
+        "role": "neutral",
+        "displayName": "Chassis Top",
+        "canonical": "#17181b",
+        "tonalRamp": [
+          "#0a0b0e",
+          "#242528",
+          "#414245",
+          "#606165",
+          "#818286",
+          "#a3a5a9",
+          "#c7c9cd",
+          "#edeef3"
+        ]
+      },
+      "chassis": {
+        "role": "neutral",
+        "displayName": "Chassis",
+        "canonical": "#0e0f11",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#242527",
+          "#414244",
+          "#606164",
+          "#818285",
+          "#a3a5a8",
+          "#c8c9cc",
+          "#edeef1"
+        ]
+      },
+      "chassis-lo": {
+        "role": "neutral",
+        "displayName": "Chassis Floor",
+        "canonical": "#08090a",
+        "tonalRamp": [
+          "#0a0b0c",
+          "#242526",
+          "#414243",
+          "#606163",
+          "#818284",
+          "#a3a5a7",
+          "#c8c9cb",
+          "#edeff0"
+        ]
+      },
+      "cap-hi": {
+        "role": "neutral",
+        "displayName": "Graphite Cap Light",
+        "canonical": "#222428",
+        "tonalRamp": [
+          "#090b0f",
+          "#232529",
+          "#404246",
+          "#5f6166",
+          "#808287",
+          "#a2a5aa",
+          "#c6c9ce",
+          "#eceef4"
+        ]
+      },
+      "cap-lo": {
+        "role": "neutral",
+        "displayName": "Graphite Cap Shade",
+        "canonical": "#15161a",
+        "tonalRamp": [
+          "#0a0b0f",
+          "#242529",
+          "#414246",
+          "#606166",
+          "#818287",
+          "#a3a5aa",
+          "#c7c9cf",
+          "#edeef4"
+        ]
+      },
+      "lcd": {
+        "role": "neutral",
+        "displayName": "Dead LCD",
+        "canonical": "#020203",
+        "tonalRamp": [
+          "#0b0b0d",
+          "#252528",
+          "#414245",
+          "#616164",
+          "#828286",
+          "#a4a4a8",
+          "#c8c9cd",
+          "#eeeef2"
+        ]
+      },
+      "print": {
+        "role": "neutral",
+        "displayName": "Silkscreen Grey",
+        "canonical": "#9aa0a8",
+        "tonalRamp": [
+          "#080b11",
+          "#21252c",
+          "#3d4249",
+          "#5c6269",
+          "#7d838b",
+          "#a0a6ae",
+          "#c3cad2",
+          "#e9eff8"
+        ]
+      },
+      "print-dim": {
+        "role": "neutral",
+        "displayName": "Faded Silkscreen",
+        "canonical": "#878d96",
+        "tonalRamp": [
+          "#070b12",
+          "#21252d",
+          "#3d424a",
+          "#5c626a",
+          "#7d838c",
+          "#9fa5af",
+          "#c3cad3",
+          "#e8eff9"
+        ]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Lit Pixel White",
+        "canonical": "#f1f3f5",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#242527",
+          "#414244",
+          "#606163",
+          "#818284",
+          "#a3a5a7",
+          "#c7c9cb",
+          "#edeff1"
+        ]
+      },
+      "ok": {
+        "role": "primary",
+        "displayName": "Signal Green",
+        "canonical": "#34d17a",
+        "tonalRamp": [
+          "#001103",
+          "#00300f",
+          "#00531f",
+          "#007931",
+          "#009d52",
+          "#61bb81",
+          "#9edab0",
+          "#d7f9e0"
+        ]
+      },
+      "warn": {
+        "role": "secondary",
+        "displayName": "Amber Load",
+        "canonical": "#f2b33d",
+        "tonalRamp": [
+          "#140800",
+          "#371f00",
+          "#5e3900",
+          "#885500",
+          "#ac7700",
+          "#c79d57",
+          "#e2c495",
+          "#fdecd1"
+        ]
+      },
+      "err": {
+        "role": "tertiary",
+        "displayName": "Fault Red",
+        "canonical": "#ff4d4f",
+        "tonalRamp": [
+          "#1e0001",
+          "#4c0308",
+          "#7e0815",
+          "#b51022",
+          "#de4344",
+          "#f47c76",
+          "#ffafa8",
+          "#ffe0db"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Readout",
+        "purpose": "Meter percentages in the status strip; tabular figures."
+      },
+      "headline": {
+        "displayName": "Wordmark",
+        "purpose": "Deck title silkscreened on the chassis; nothing else."
+      },
+      "title": {
+        "displayName": "Screen Message",
+        "purpose": "Sentences written into the status strip."
+      },
+      "body": {
+        "displayName": "Instruction",
+        "purpose": "System-face sentences that explain a setup step (unpaired panel)."
+      },
+      "label": {
+        "displayName": "Silkscreen Label",
+        "purpose": "Segment names, power status word, strip message title."
+      },
+      "label-detail": {
+        "displayName": "Readout Detail",
+        "purpose": "Real-data lines under meters: core count, GB, GPU name."
+      }
+    },
+    "shadows": [
+      {
+        "name": "keycap-rest",
+        "value": "inset 0 1px 0 rgba(255,255,255,0.08), 0 1px 1px rgba(0,0,0,0.9), 0 4px 8px -2px rgba(0,0,0,0.8)",
+        "purpose": "Keycap standing proud of the chassis."
+      },
+      {
+        "name": "keycap-pressed",
+        "value": "inset 0 1px 0 rgba(255,255,255,0.05), 0 0 0 rgba(0,0,0,0.9), 0 1px 2px rgba(0,0,0,0.8)",
+        "purpose": "Keycap at the bottom of its 3px travel."
+      },
+      {
+        "name": "screen-recess-strip",
+        "value": "inset 0 2px 6px rgba(0,0,0,0.9), 0 1px 0 rgba(255,255,255,0.05)",
+        "purpose": "Status strip and panels cut into the chassis."
+      },
+      {
+        "name": "screen-recess-key",
+        "value": "inset 0 1px 4px rgba(0,0,0,0.95), 0 0 0 1px rgba(0,0,0,0.6)",
+        "purpose": "Key LCD set into the cap."
+      },
+      {
+        "name": "led-dome",
+        "value": "inset 0 -1px 1px rgba(0,0,0,0.45), 0 1px 0 rgba(255,255,255,0.06)",
+        "purpose": "Power LED dome; no halo."
+      },
+      {
+        "name": "glass-sheen-key",
+        "value": "linear-gradient(155deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.02) 38%, transparent 39%)",
+        "purpose": "Overlay on every key LCD."
+      },
+      {
+        "name": "glass-sheen-strip",
+        "value": "linear-gradient(170deg, rgba(255,255,255,0.05) 0%, transparent 40%)",
+        "purpose": "Overlay on the status strip."
+      }
+    ],
+    "motion": [
+      {
+        "name": "key-travel",
+        "value": "transform 70ms ease-out, box-shadow 70ms ease-out",
+        "purpose": "Keycap sinks 3px on pointerdown; held at least 90ms."
+      },
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Meter bar travel (700ms) and key result flashes."
+      },
+      {
+        "name": "flash-ok",
+        "value": "650ms",
+        "purpose": "White radial flash inside the key LCD on success."
+      },
+      {
+        "name": "flash-err",
+        "value": "900ms",
+        "purpose": "Fault Red fill held to 60%, then fades."
+      },
+      {
+        "name": "state-fade",
+        "value": "300ms ease",
+        "purpose": "LED and meter colour changes."
+      },
+      {
+        "name": "strip-message-hold",
+        "value": "3600ms",
+        "purpose": "How long a message replaces the meters."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "portrait",
+        "value": "(orientation: portrait)"
+      },
+      {
+        "name": "landscape",
+        "value": "(orientation: landscape)"
+      },
+      {
+        "name": "landscape-short",
+        "value": "(orientation: landscape) and (max-height: 500px)"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Key",
+      "kind": "button",
+      "refersTo": "key",
+      "description": "Graphite keycap with a recessed LCD showing the real app icon; icon-only, travels 3px on press.",
+      "html": "<button class=\"ds-key\" type=\"button\" aria-label=\"App\"><span class=\"ds-lcd\"><span class=\"ds-ico\"><svg viewBox=\"0 0 24 24\" width=\"100%\" height=\"100%\" aria-hidden=\"true\"><rect width=\"24\" height=\"24\" rx=\"5\" fill=\"#d97757\"/><path d=\"M12 5v14M5 12h14M7 7l10 10M17 7 7 17\" stroke=\"#fff\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg></span></span></button>",
+      "css": ".ds-key{position:relative;width:96px;height:96px;padding:7%;border:0;border-radius:20%;background:linear-gradient(180deg,#222428,#15161a);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 1px 1px rgba(0,0,0,.9),0 4px 8px -2px rgba(0,0,0,.8);cursor:pointer;transition:transform 70ms ease-out,box-shadow 70ms ease-out;}.ds-key:active:not(:disabled){transform:translateY(3px);box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 0 0 rgba(0,0,0,.9),0 1px 2px rgba(0,0,0,.8);}.ds-key:focus-visible{outline:2px solid #9aa0a8;outline-offset:3px;}.ds-lcd{position:relative;display:grid;place-items:center;width:100%;height:100%;border-radius:15%;background:#020203;box-shadow:inset 0 1px 4px rgba(0,0,0,.95),0 0 0 1px rgba(0,0,0,.6);overflow:hidden;}.ds-lcd::after{content:'';position:absolute;inset:0;border-radius:inherit;background:linear-gradient(155deg,rgba(255,255,255,.10) 0%,rgba(255,255,255,.02) 38%,transparent 39%);pointer-events:none;}.ds-ico{width:66%;height:66%;transition:filter 160ms ease;}.ds-key:active .ds-ico{filter:brightness(.75);}"
+    },
+    {
+      "name": "Empty Key",
+      "kind": "button",
+      "refersTo": "key",
+      "description": "Unassigned slot: a disabled, unlit LCD that keeps the matrix full.",
+      "html": "<button class=\"ds-key\" type=\"button\" disabled aria-hidden=\"true\"><span class=\"ds-lcd\"></span></button>",
+      "css": ".ds-key{position:relative;width:96px;height:96px;padding:7%;border:0;border-radius:20%;background:linear-gradient(180deg,#222428,#15161a);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 1px 1px rgba(0,0,0,.9),0 4px 8px -2px rgba(0,0,0,.8);cursor:pointer;transition:transform 70ms ease-out,box-shadow 70ms ease-out;}.ds-key:active:not(:disabled){transform:translateY(3px);box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 0 0 rgba(0,0,0,.9),0 1px 2px rgba(0,0,0,.8);}.ds-key:focus-visible{outline:2px solid #9aa0a8;outline-offset:3px;}.ds-lcd{position:relative;display:grid;place-items:center;width:100%;height:100%;border-radius:15%;background:#020203;box-shadow:inset 0 1px 4px rgba(0,0,0,.95),0 0 0 1px rgba(0,0,0,.6);overflow:hidden;}.ds-lcd::after{content:'';position:absolute;inset:0;border-radius:inherit;background:linear-gradient(155deg,rgba(255,255,255,.10) 0%,rgba(255,255,255,.02) 38%,transparent 39%);pointer-events:none;}.ds-ico{width:66%;height:66%;transition:filter 160ms ease;}.ds-key:active .ds-ico{filter:brightness(.75);}.ds-key:disabled{cursor:default;}"
+    },
+    {
+      "name": "Key Error Flash",
+      "kind": "custom",
+      "refersTo": "key",
+      "description": "The PC refused or was unreachable: the key LCD floods Fault Red at 42% alpha, then fades.",
+      "html": "<button class=\"ds-key\" type=\"button\" aria-label=\"App\"><span class=\"ds-lcd\"><span class=\"ds-ico\"><svg viewBox=\"0 0 24 24\" width=\"100%\" height=\"100%\" aria-hidden=\"true\"><rect width=\"24\" height=\"24\" rx=\"5\" fill=\"#d97757\"/><path d=\"M12 5v14M5 12h14M7 7l10 10M17 7 7 17\" stroke=\"#fff\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg></span><span class=\"ds-flash\"></span></span></button>",
+      "css": ".ds-key{position:relative;width:96px;height:96px;padding:7%;border:0;border-radius:20%;background:linear-gradient(180deg,#222428,#15161a);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 1px 1px rgba(0,0,0,.9),0 4px 8px -2px rgba(0,0,0,.8);cursor:pointer;transition:transform 70ms ease-out,box-shadow 70ms ease-out;}.ds-key:active:not(:disabled){transform:translateY(3px);box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 0 0 rgba(0,0,0,.9),0 1px 2px rgba(0,0,0,.8);}.ds-key:focus-visible{outline:2px solid #9aa0a8;outline-offset:3px;}.ds-lcd{position:relative;display:grid;place-items:center;width:100%;height:100%;border-radius:15%;background:#020203;box-shadow:inset 0 1px 4px rgba(0,0,0,.95),0 0 0 1px rgba(0,0,0,.6);overflow:hidden;}.ds-lcd::after{content:'';position:absolute;inset:0;border-radius:inherit;background:linear-gradient(155deg,rgba(255,255,255,.10) 0%,rgba(255,255,255,.02) 38%,transparent 39%);pointer-events:none;}.ds-ico{width:66%;height:66%;transition:filter 160ms ease;}.ds-key:active .ds-ico{filter:brightness(.75);}.ds-flash{position:absolute;inset:0;border-radius:inherit;pointer-events:none;animation:ds-err 900ms cubic-bezier(.16,1,.3,1) infinite;}@keyframes ds-err{0%,60%{opacity:1;background:rgba(255,77,79,.42);}100%{opacity:0;}}"
+    },
+    {
+      "name": "Status Strip",
+      "kind": "custom",
+      "refersTo": "status-strip",
+      "description": "Recessed LCD strip with CPU / RAM / GPU meters; bar colour follows the state thresholds.",
+      "html": "<section class=\"ds-strip\" aria-label=\"Uso do PC\"><div class=\"ds-seg\"><span class=\"ds-seg-label\">CPU</span><span class=\"ds-seg-value\">51<i>%</i></span><span class=\"ds-seg-bar\"><span style=\"width:51%;background:var(--ok)\"></span></span><span class=\"ds-seg-detail\">20 núcleos</span></div><div class=\"ds-seg\"><span class=\"ds-seg-label\">RAM</span><span class=\"ds-seg-value\">78<i>%</i></span><span class=\"ds-seg-bar\"><span style=\"width:78%;background:var(--warn)\"></span></span><span class=\"ds-seg-detail\">24.8 / 31.7 GB</span></div><div class=\"ds-seg\"><span class=\"ds-seg-label\">GPU</span><span class=\"ds-seg-value\">94<i>%</i></span><span class=\"ds-seg-bar\"><span style=\"width:94%;background:var(--err)\"></span></span><span class=\"ds-seg-detail\">Intel UHD</span></div></section>",
+      "css": ":host{--lcd:#020203;--print:#9aa0a8;--print-dim:#878d96;--text:#f1f3f5;--ok:#34d17a;--warn:#f2b33d;--err:#ff4d4f;}.ds-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:320px;height:80px;border-radius:14px;background:var(--lcd);box-shadow:inset 0 2px 6px rgba(0,0,0,.9),0 1px 0 rgba(255,255,255,.05);overflow:hidden;position:relative;}.ds-strip::after{content:'';position:absolute;inset:0;background:linear-gradient(170deg,rgba(255,255,255,.05) 0%,transparent 40%);pointer-events:none;}.ds-seg{display:grid;grid-template-columns:1fr auto;grid-template-areas:'label value' 'bar bar' 'detail detail';align-items:baseline;row-gap:7px;padding:11px 12px 10px;}.ds-seg+.ds-seg{border-left:1px solid #16181b;}.ds-seg-label{grid-area:label;font:600 12px/1 \"Barlow Condensed\",\"Arial Narrow\",system-ui,sans-serif;letter-spacing:.14em;color:var(--print-dim);}.ds-seg-value{grid-area:value;font:600 26px/.9 \"Barlow Condensed\",\"Arial Narrow\",system-ui,sans-serif;font-variant-numeric:tabular-nums;color:var(--text);}.ds-seg-value i{font-style:normal;font-size:.55em;color:var(--print-dim);margin-left:1px;}.ds-seg-bar{grid-area:bar;height:3px;border-radius:2px;background:#15171a;overflow:hidden;}.ds-seg-bar span{display:block;height:100%;transition:width 700ms cubic-bezier(.16,1,.3,1);}.ds-seg-detail{grid-area:detail;font:500 11.5px/1 \"Barlow Condensed\",\"Arial Narrow\",system-ui,sans-serif;letter-spacing:.04em;font-variant-numeric:tabular-nums;color:var(--print-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}"
+    },
+    {
+      "name": "Strip Message",
+      "kind": "custom",
+      "refersTo": "strip-message",
+      "description": "Error written into the strip in place of the meters for 3.6s; never a toast.",
+      "html": "<section class=\"ds-strip\"><p class=\"ds-msg\" role=\"status\"><b>PC fora do ar</b><span>Confira se o agente está rodando no PC.</span></p></section>",
+      "css": ":host{--lcd:#020203;--print:#9aa0a8;--print-dim:#878d96;--text:#f1f3f5;--ok:#34d17a;--warn:#f2b33d;--err:#ff4d4f;}.ds-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:320px;height:80px;border-radius:14px;background:var(--lcd);box-shadow:inset 0 2px 6px rgba(0,0,0,.9),0 1px 0 rgba(255,255,255,.05);overflow:hidden;position:relative;}.ds-strip::after{content:'';position:absolute;inset:0;background:linear-gradient(170deg,rgba(255,255,255,.05) 0%,transparent 40%);pointer-events:none;}.ds-seg{display:grid;grid-template-columns:1fr auto;grid-template-areas:'label value' 'bar bar' 'detail detail';align-items:baseline;row-gap:7px;padding:11px 12px 10px;}.ds-seg+.ds-seg{border-left:1px solid #16181b;}.ds-seg-label{grid-area:label;font:600 12px/1 \"Barlow Condensed\",\"Arial Narrow\",system-ui,sans-serif;letter-spacing:.14em;color:var(--print-dim);}.ds-seg-value{grid-area:value;font:600 26px/.9 \"Barlow Condensed\",\"Arial Narrow\",system-ui,sans-serif;font-variant-numeric:tabular-nums;color:var(--text);}.ds-seg-value i{font-style:normal;font-size:.55em;color:var(--print-dim);margin-left:1px;}.ds-seg-bar{grid-area:bar;height:3px;border-radius:2px;background:#15171a;overflow:hidden;}.ds-seg-bar span{display:block;height:100%;transition:width 700ms cubic-bezier(.16,1,.3,1);}.ds-seg-detail{grid-area:detail;font:500 11.5px/1 \"Barlow Condensed\",\"Arial Narrow\",system-ui,sans-serif;letter-spacing:.04em;font-variant-numeric:tabular-nums;color:var(--print-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}.ds-msg{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:5px;margin:0;padding:10px 16px;font:500 15px/1.25 \"Barlow Condensed\",\"Arial Narrow\",system-ui,sans-serif;letter-spacing:.02em;color:var(--text);}.ds-msg b{font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--err);}"
+    },
+    {
+      "name": "Power Indicator",
+      "kind": "button",
+      "refersTo": "power-indicator",
+      "description": "LED dome plus silkscreened status word; green online, red offline; tap reconnects.",
+      "html": "<button class=\"ds-power ds-online\" type=\"button\"><span class=\"ds-led\"></span>online</button>",
+      "css": ":host{--lcd:#020203;--print:#9aa0a8;--print-dim:#878d96;--text:#f1f3f5;--ok:#34d17a;--warn:#f2b33d;--err:#ff4d4f;}.ds-power{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 10px;border:0;background:none;color:var(--print-dim);font:600 12px/1 \"Barlow Condensed\",\"Arial Narrow\",system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;}.ds-led{width:8px;height:8px;border-radius:50%;--on:#3a3d42;background:radial-gradient(circle at 45% 28%,rgba(255,255,255,.4) 0 10%,transparent 30%),var(--on);box-shadow:inset 0 -1px 1px rgba(0,0,0,.45),0 1px 0 rgba(255,255,255,.06);transition:background-color 300ms ease;}.ds-online .ds-led{--on:var(--ok);}.ds-power:focus-visible{outline:2px solid var(--print);outline-offset:2px;border-radius:6px;}"
+    },
+    {
+      "name": "Wordmark",
+      "kind": "custom",
+      "description": "Deck title as chassis silkscreen: condensed caps, wide tracking, print grey.",
+      "html": "<span class=\"ds-wordmark\">PC DECK</span>",
+      "css": ".ds-wordmark{font:700 18px/1 \"Barlow Condensed\",\"Arial Narrow\",system-ui,sans-serif;letter-spacing:.22em;padding-left:.22em;color:#9aa0a8;text-transform:uppercase;}"
+    },
+    {
+      "name": "Fullscreen Button",
+      "kind": "button",
+      "refersTo": "chassis-icon-button",
+      "description": "Stroked corner glyph in faded silkscreen with a 44px target; brightens while pressed.",
+      "html": "<button class=\"ds-fs\" type=\"button\" aria-label=\"Tela cheia\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5\"/></svg></button>",
+      "css": ".ds-fs{display:grid;place-items:center;width:44px;height:44px;border:0;background:none;color:#878d96;cursor:pointer;}.ds-fs svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}.ds-fs:hover,.ds-fs:active{color:#9aa0a8;}.ds-fs:focus-visible{outline:2px solid #9aa0a8;border-radius:6px;}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Sober Deck",
+    "overview": "The phone is not showing an app about a Stream Deck. It is the device: a matte black chassis edge to edge, a recessed LCD strip, and a matrix of graphite keycaps with black glass screens set into them. The reference is pinned by the user: an Elgato Stream Deck MK.2 with no RGB, plus the Stream Deck+ status strip. Every surface is either chassis, keycap, or screen, and each one is lit and shaded as that material would be.\n\nDensity is glance-first. One block (silkscreen row, status strip, key matrix) is centered in the viewport and sized so the keys are the largest squares that fit. Nothing scrolls. Colour comes only from the real app icons on the key LCDs and from the three state lights. The chassis printing (wordmark, ONLINE, CPU / RAM / GPU) is set in condensed caps in a muted grey, the way paint on plastic looks.\n\nMotion is hardware motion. A key sinks 3px when touched, the action fires on release, and the PC's answer flashes inside that key's own LCD. Messages are written into the status strip, not floated over it.",
+    "keyCharacteristics": [
+      "Matte black chassis with a lit top edge; graphite keycaps; near-black recessed LCDs with a diagonal glass sheen.",
+      "Icon-only keys showing full-colour real app icons; empty slots render as dark, unlit LCDs.",
+      "Barlow Condensed silkscreen for the wordmark, labels, and numerals; system UI face only for explanatory text.",
+      "Green, amber, and red reserved for state.",
+      "One centered block: silkscreen, strip, and keys share the same width."
+    ],
+    "rules": [
+      {
+        "name": "The State-Only Colour Rule",
+        "body": "Green, amber, and red mean only online/offline, load level, or a command result. They never decorate, never tint a surface, and never appear as glow. Thresholds are fixed: under 70% is ok, 70 to 89% is warn, and 90% or more is err.",
+        "section": "colors"
+      },
+      {
+        "name": "The Icons Carry The Colour Rule",
+        "body": "Saturated colour belongs only to the real app icons (a brand mark that is officially monochrome, like GitHub, stays as it is). The rest of the device stays neutral so the icons read at a glance.",
+        "section": "colors"
+      },
+      {
+        "name": "The Silkscreen Rule",
+        "body": "Anything painted on the chassis is Barlow Condensed in a print grey, never Lit Pixel White. White is for things a screen is displaying.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Readout Rule",
+        "body": "Every live number uses tabular figures so readouts do not jitter as they update every 2s.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Block Rule",
+        "body": "The silkscreen row, strip, and key matrix always share one width and one center axis. Nothing sits outside the block except the chassis itself.",
+        "section": "layout"
+      },
+      {
+        "name": "The Recessed Glass Rule",
+        "body": "Every screen is inset into the chassis and carries a faint diagonal glass sheen (white, 5 to 10% alpha, fading to transparent by about 40%). Content on a screen never casts an outer shadow.",
+        "section": "elevation"
+      },
+      {
+        "name": "The No Glow Rule",
+        "body": "Light does not spill. The LED, the meters, and the flashes stay inside their own shapes.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** build every new surface out of the three materials: chassis (gradient from `chassis-hi` to `chassis-lo`), keycap (`cap-hi` to `cap-lo`, standing proud), and screen (`lcd`, recessed, with a glass sheen).",
+      "**Do** show live information and messages inside a screen, such as the strip or a key LCD, rather than over the chassis.",
+      "**Do** keep keys icon-only, with the real full-colour icon at 66% of the LCD and the label in `aria-label`.",
+      "**Do** size keys by fitting the largest square, capped at 170px, and keep the silkscreen row, strip, and keys on one shared block width.",
+      "**Do** keep touch targets at 44px or more, with visible glyphs aligned to the block edges.",
+      "**Do** give every press physical feedback: 3px of travel, a short vibration, and an answer flashed in that key's own LCD."
+    ],
+    "donts": [
+      "**Don't** use green, amber, or red for anything other than state, and don't add RGB lighting, glows, or LED halos.",
+      "**Don't** put a visible text label on a key, or replace a real app icon with a generic glyph or a redrawn one.",
+      "**Don't** use toasts, modals, or floating overlays. The device has no surface for them.",
+      "**Don't** set chassis printing in white or in the system face. Silkscreen is Barlow Condensed in a print grey.",
+      "**Don't** hide empty key slots. An unlit LCD is part of the device.",
+      "**Don't** let the page scroll, or let any element break out of the centered block."
+    ]
+  }
+}
