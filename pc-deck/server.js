@@ -45,6 +45,26 @@ function isLocalDirect(req) {
   return loopback && !req.headers['x-forwarded-for'] && !req.headers['tailscale-user-login'];
 }
 
+// Anti DNS rebinding: só aceita pedidos endereçados ao próprio agente.
+// Um site malicioso pode apontar o domínio dele para 127.0.0.1, mas o Host continua sendo o domínio dele.
+// Nomes *.ts.net são controlados pelo Tailscale, e IP literal não dá para "sequestrar".
+function allowedHost(req) {
+  let name;
+  try { name = new URL(`http://${req.headers.host || ''}`).hostname.toLowerCase(); } catch { return false; }
+  if (name === 'localhost' || name.endsWith('.localhost')) return true;
+  if (name.endsWith('.ts.net')) return true;
+  if (/^\d{1,3}(\.\d{1,3}){3}$/.test(name)) return true; // IPv4 literal
+  if (name.startsWith('[') && name.endsWith(']')) return true; // IPv6 literal
+  return false;
+}
+
+// Bloqueia POST vindo de outro site (ex.: formulário escondido que gira a chave).
+function sameOrigin(req) {
+  const origin = req.headers.origin;
+  if (!origin) return true; // navegadores sempre mandam Origin em POST; sem Origin = cliente não-navegador
+  try { return new URL(origin).host === req.headers.host; } catch { return false; }
+}
+
 // ---------- deck ----------
 function loadDeck() {
   return JSON.parse(fs.readFileSync(DECK_FILE, 'utf8'));
@@ -188,7 +208,8 @@ function send(res, status, body, type = 'application/json; charset=utf-8') {
 }
 
 function serveStatic(req, res) {
-  const rel = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+  let rel;
+  try { rel = decodeURIComponent(new URL(req.url, 'http://x').pathname); } catch { return send(res, 400, { error: 'bad request' }); }
   const file = path.normalize(path.join(PUBLIC, rel === '/' ? 'index.html' : rel));
   if (!file.startsWith(PUBLIC + path.sep)) return send(res, 403, { error: 'forbidden' });
   fs.readFile(file, (err, data) => {
@@ -216,8 +237,20 @@ function pairingUrls() {
   return urls;
 }
 
-const server = http.createServer(async (req, res) => {
-  const url = new URL(req.url, 'http://x');
+const server = http.createServer((req, res) => {
+  handle(req, res).catch((e) => {
+    console.error(`[${new Date().toLocaleTimeString()}] erro interno: ${e.message}`);
+    if (!res.headersSent) send(res, 500, { error: 'erro interno' });
+    else res.destroy();
+  });
+});
+
+async function handle(req, res) {
+  let url;
+  try { url = new URL(req.url, 'http://x'); } catch { return send(res, 400, { error: 'bad request' }); }
+
+  if (!allowedHost(req)) return send(res, 421, { error: 'host não permitido' });
+  if (req.method !== 'GET' && !sameOrigin(req)) return send(res, 403, { error: 'origem não permitida' });
 
   if (url.pathname === '/pair' || url.pathname === '/api/pairing') {
     if (!isLocalDirect(req)) return send(res, 403, { error: 'abra o pareamento no próprio PC' });
@@ -263,7 +296,7 @@ const server = http.createServer(async (req, res) => {
 
   if (req.method !== 'GET') return send(res, 405, { error: 'method not allowed' });
   serveStatic(req, res);
-});
+}
 
 loadDeck(); // falha cedo se o deck.json estiver quebrado
 server.listen(PORT, HOST, () => {

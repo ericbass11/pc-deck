@@ -75,8 +75,16 @@ A fonte (Barlow Condensed, licença OFL) fica em `public/fonts/` e funciona offl
 
 - O celular só manda o **id** do botão; o que é executado está fixo no `deck.json` do PC. Não existe rota para comando livre.
 - Toda chamada exige a chave (`Authorization: Bearer`); errar a chave custa 400 ms por tentativa.
-- A página de pareamento só abre no próprio PC (bloqueada via Tailscale e via LAN).
+- A página de pareamento só abre no próprio PC (bloqueada via Tailscale e via LAN) e não carrega nenhum script de fora.
+- O agente recusa pedidos endereçados a outro domínio (proteção contra *DNS rebinding*) e POST vindo de outro site.
 - `.token` é a chave. Não versione esse arquivo.
+
+### Antes de usar, leia
+
+- **Não exponha na internet.** Nada de `tailscale funnel`, ngrok, Cloudflare Tunnel ou redirecionamento de porta no roteador. O `tailscale serve` já deixa o painel visível só para os seus aparelhos.
+- **`--lan` só em rede de casa.** Sem HTTPS, a chave passa aberta pela rede. Em Wi-Fi público, de trabalho ou de hotel, use o Tailscale.
+- **O `deck.json` é seu.** Os caminhos que vêm no repositório são de exemplo. Revise o que cada tecla executa antes de ligar o agente.
+- **Celular perdido ou chave vazada:** abra `http://127.0.0.1:8787/pair` e use **Gerar nova chave**.
 
 ## Monitor
 
