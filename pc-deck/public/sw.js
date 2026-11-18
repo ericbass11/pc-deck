@@ -1,6 +1,6 @@
 // Cache só da "casca" do app; a API sempre vai para a rede.
 // Ícones novos (enviados pelo editor) entram no cache no primeiro uso, pelo fetch abaixo.
-const CACHE = 'pcdeck-v10';
+const CACHE = 'pcdeck-v11';
 const SHELL = ['/', '/index.html', '/style.css', '/app.js', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png',
   '/icons/claude.png', '/icons/codex.png', '/icons/vscode.png', '/icons/youtube.png',
   '/icons/google.png', '/icons/outlook.png', '/icons/github.svg', '/icons/gemini.png', '/icons/teams.png', '/icons/explorer.png', '/icons/snipping.png', '/icons/termius.png', '/icons/docker.png',

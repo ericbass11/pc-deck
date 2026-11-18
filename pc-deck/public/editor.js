@@ -108,7 +108,7 @@ function face(b) {
     lcd.append(h('span', { class: 'mini' }, b.folder.slice(0, 4).map((c) =>
       h('span', {}, c.image || isFolder(c) ? h('img', { src: c.image || '/icons/pasta.svg', alt: '', draggable: false }) : null))));
   } else if (b.image) {
-    lcd.append(h('img', { src: b.image, alt: '', draggable: false }));
+    lcd.append(h('img', { src: b.image, alt: '', draggable: false, class: 'halo' }), h('img', { src: b.image, alt: '', draggable: false, class: 'icon' }));
   } else {
     lcd.append(h('span', { class: 'lcd-label', text: b.label }));
   }

@@ -178,42 +178,44 @@ The device fills the viewport (`100dvh`, no scroll, overscroll disabled). Chassi
 The key size is computed rather than set. It is the largest square that fits both the container width and its leftover height, capped at 170px. The gap is `gap` everywhere, both between keys and between the strip and the keys.
 
 - **Portrait:** a 3 × 5 matrix (15 keys per page).
-- **Landscape:** a 5 × 3 matrix, like the device lying down.
-- **Short landscape (max-height 500px):** chassis padding 12px, strip 54px, silkscreen row 30px with a 4px gap, and the detail lines hidden.
+- **Landscape (console):** height is the limit, so the block turns into a console. A left rail (`clamp(150px, 22vw, 260px)`) holds the wordmark, the power and fullscreen row, the strip standing upright with its three segments stacked (1px seams on top instead of on the side), and the page dots at the bottom. The 5 × 3 matrix sits on the right. Keys are the largest squares that fit the full height (cap 200px), and the rail is exactly as tall as the matrix.
+- **Very short landscape (max-height 340px):** the detail lines are hidden.
 
-The silkscreen row is a three-column grid. Power is on the left, the wordmark is centered, and fullscreen is on the right. The touch targets bleed into the margins (negative margins) so the visible glyphs stay aligned to the edges of the block. Page dots appear under the keys only when there is more than one page.
+In portrait the silkscreen row is a three-column grid. Power is on the left, the wordmark is centered, and fullscreen is on the right. The touch targets bleed into the margins (negative margins) so the visible glyphs stay aligned to the edges of the block. Page dots appear under the keys only when there is more than one page.
 
-**The One Block Rule.** The silkscreen row, strip, and key matrix always share one width and one center axis. Nothing sits outside the block except the chassis itself.
+**The One Block Rule.** The silkscreen, strip, and key matrix always form one centered block. In portrait they share one width; in landscape the rail and the matrix share one height. Nothing sits outside the block except the chassis itself.
 
 ## Elevation & Depth
 
 Depth is physical and has two directions. Keycaps stand proud of the chassis. Screens are cut into it. There are no floating layers, cards, or overlays.
 
 ### Shadow Vocabulary
-- **Keycap at rest** (`box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 1px 1px rgba(0,0,0,0.9), 0 4px 8px -2px rgba(0,0,0,0.8)`): a lit top lip, a contact shadow, and a soft drop shadow.
-- **Keycap pressed** (`inset 0 1px 0 rgba(255,255,255,0.05), 0 0 0 rgba(0,0,0,0.9), 0 1px 2px rgba(0,0,0,0.8)`): the drop shadow collapses as the cap travels 3px down.
+- **Key well** (`#050607`, `inset 0 2px 3px rgba(0,0,0,0.95), inset 0 -1px 0 rgba(255,255,255,0.035), 0 1px 0 rgba(255,255,255,0.045)`): the hole cut into the chassis that the cap sits in. It never moves.
+- **Keycap at rest** (`::before`, inset 4.5% in the well, `#282a2f → #1c1e22 → #131417` with a soft top-left highlight; `inset 0 1px 0 rgba(255,255,255,0.12)` lit top edge, 1px side catches, `inset 0 -2px 2px rgba(0,0,0,0.55)` shaded skirt, `0 2px 2px rgba(0,0,0,0.75), 0 5px 9px -3px rgba(0,0,0,0.8)` onto the well floor).
+- **Keycap pressed:** cap and LCD travel 3px down inside the still well; the drop shadow collapses to `0 0 1px rgba(0,0,0,0.9)`.
 - **Recessed screen, strip** (`inset 0 2px 6px rgba(0,0,0,0.9), 0 1px 0 rgba(255,255,255,0.05)`): the cutout, with a lit lower lip on the chassis.
-- **Recessed screen, key LCD** (`inset 0 1px 4px rgba(0,0,0,0.95), 0 0 0 1px rgba(0,0,0,0.6)`).
+- **Key LCD bezel** (`0 0 0 1px #000, 0 0 0 2px rgba(255,255,255,0.05), inset 0 1px 5px rgba(0,0,0,0.95)`): a black frame with a hairline of light around the screen.
 - **LED dome** (`inset 0 -1px 1px rgba(0,0,0,0.45), 0 1px 0 rgba(255,255,255,0.06)`), with a radial highlight at 45% / 28%. It has no halo.
 
 ### Named Rules
 **The Recessed Glass Rule.** Every screen is inset into the chassis and carries a faint diagonal glass sheen (white, 5 to 10% alpha, fading to transparent by about 40%). Content on a screen never casts an outer shadow.
 
-**The No Glow Rule.** Light does not spill. The LED, the meters, and the flashes stay inside their own shapes.
+**The No Glow Rule.** Light does not spill. The LED, the meters, and the flashes stay inside their own shapes. The one light a key makes is its LCD backlight: a blurred copy of the icon behind it (blur 11% of the key, saturate 1.6, 40% opacity), clipped by the screen, the way a real LCD lights up around a bright image. It never leaves the screen.
 
 ## Shapes
 
-Shapes are soft-cornered squares that scale with their object. A keycap is rounded at 20% of its size and its LCD at 15%, so the screen corner sits concentric inside the cap at any key size. The strip uses a viewport-scaled radius (12 to 16px). The unpaired panel shares the strip's radius, so every screen cut into the chassis has the same corner. Meter bars are 3px tall with 2px ends. The LED and page dots are circles. There are no borders, except the 1px dividers between strip segments (#16181b), which read as seams in the glass.
+Shapes are soft-cornered squares that scale with their object. A key well is rounded at 22% of its size, its cap at 19%, and its LCD at 14%, so the corners stay concentric at any key size. The strip uses a viewport-scaled radius (12 to 16px). The unpaired panel shares the strip's radius, so every screen cut into the chassis has the same corner. Meter bars are 3px tall with 2px ends. The LED and page dots are circles. There are no borders, except the 1px dividers between strip segments (#16181b), which read as seams in the glass.
 
 ## Components
 
 ### Key (signature)
 Feels like a physical keycap with a screen in it.
-- **Shape:** a square sized to fit, rounded at 20%. The LCD inset is 7% and is rounded at 15%.
-- **Content:** the real app icon in full colour at 66% of the LCD, `object-fit: contain`. There is no visible label. The label is carried by `aria-label` and the title.
-- **Empty slot:** a disabled, unlit LCD with no icon. It is never hidden or collapsed, because the grid is always full.
-- **Travel:** on pointerdown the cap sinks `translateY(3px)` (70ms ease-out), the icon dims to 75% brightness, and the phone vibrates for 10ms. The cap is held down for at least 90ms, and the action fires on release.
-- **Busy:** the icon dims to 55% brightness.
+- **Layers:** well (the button, rounded 22%) → cap (`::before`, inset 4.5%, rounded 19%) → LCD (inset 11.5% from the well edge, rounded 14%). Each corner stays concentric with the next at any key size.
+- **Content:** the real app icon in full colour at 64% of the LCD, `object-fit: contain`, over its own backlight. There is no visible label. The label is carried by `aria-label` and the title.
+- **Glass:** a diagonal sheen plus a thin lit band along the top edge of the screen.
+- **Empty slot:** a disabled, unlit LCD with no icon, still sitting in its well and cap. It is never hidden or collapsed, because the grid is always full.
+- **Travel:** on pointerdown the cap and screen sink `translateY(3px)` inside the well (70ms ease-out), the screen dims to 78% brightness, and the phone vibrates for 10ms. The cap is held down for at least 90ms, and the action fires on release. On devices with hover, the cap brightens slightly.
+- **Busy:** the screen dims to 60% brightness.
 - **Result:** OK is a white radial flash inside the LCD (650ms, `cubic-bezier(0.16, 1, 0.3, 1)`). Error is a red fill at 42% alpha held for 60% of 900ms, plus a vibration pattern of 40/60/40ms.
 - **Focus:** a 2px Silkscreen Grey outline offset 3px.
 

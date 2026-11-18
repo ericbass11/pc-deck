@@ -119,11 +119,12 @@ function wireTravel(el) {
   el.addEventListener('pointerleave', release);
 }
 
-function iconImg(src) {
+function iconImg(src, cls) {
   const img = document.createElement('img');
   img.src = src;
   img.alt = '';
   img.draggable = false;
+  if (cls) img.className = cls;
   return img;
 }
 
@@ -153,7 +154,7 @@ function makeKey(btn) {
     el.title = btn.label;
 
     if (btn.kind === 'folder' && !btn.image) lcd.append(folderFace(btn));
-    else if (btn.image) lcd.append(iconImg(btn.image));
+    else if (btn.image) lcd.append(iconImg(btn.image, 'halo'), iconImg(btn.image, 'icon'));
     else {
       const t = document.createElement('span');
       t.className = 'lcd-label';

@@ -2,7 +2,9 @@
 
 Um Stream Deck caseiro: o celular vira um painel de atalhos do PC Windows, com teclas LCD e monitor de CPU, RAM e GPU em tempo real.
 
-<p align="center"><img src=".impeccable/review/mobile.png" alt="PC Deck no celular: faixa de CPU, RAM e GPU e grade de teclas com ícones de apps" width="300"></p>
+<p align="center"><img src=".impeccable/review/mobile.png" alt="PC Deck no celular em pé: faixa de CPU, RAM e GPU e grade 3×5 de teclas com ícones de apps" width="300"></p>
+
+<p align="center"><img src=".impeccable/review/landscape.png" alt="PC Deck no celular deitado: coluna com CPU, RAM e GPU à esquerda e matriz 5×3 de teclas ocupando a tela" width="720"></p>
 
 - **Agente no PC:** Node puro, sem `npm install`. Executa só as ações cadastradas em `deck.json`.
 - **Painel no celular:** PWA em tela cheia, com acesso privado via Tailscale (HTTPS) e pareamento por QR code.

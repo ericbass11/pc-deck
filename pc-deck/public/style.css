@@ -245,6 +245,12 @@ body {
   align-items: center;
   justify-content: center;
 }
+/* serigrafia + faixa + teclas: um bloco só (em paisagem vira coluna lateral + matriz) */
+.deck-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .keys-area .strip {
   width: var(--block-w);
   height: var(--strip-h);
@@ -257,20 +263,40 @@ body {
   gap: var(--gap);
 }
 
+/* Tecla em três camadas, como no aparelho:
+   poço recortado no chassi (o botão) → cápsula de plástico (::before, afunda) → tela LCD (afunda junto). */
 .key {
   position: relative;
+  isolation: isolate;
   width: var(--k);
   height: var(--k);
-  padding: 7%;
+  padding: 11.5%;
   border: 0;
-  border-radius: 20%;
-  background: linear-gradient(180deg, var(--cap-hi), var(--cap-lo));
+  border-radius: 22%;
+  background: #050607;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 1px 1px rgba(0, 0, 0, 0.9),
-    0 4px 8px -2px rgba(0, 0, 0, 0.8);
+    inset 0 2px 3px rgba(0, 0, 0, 0.95),          /* fundo do poço */
+    inset 0 -1px 0 rgba(255, 255, 255, 0.035),    /* lábio de baixo do recorte */
+    0 1px 0 rgba(255, 255, 255, 0.045);           /* aresta do chassi pegando luz */
   cursor: pointer;
   touch-action: manipulation;
+}
+.key::before { /* a cápsula */
+  content: "";
+  position: absolute;
+  inset: 4.5%;
+  z-index: -1;
+  border-radius: 19%;
+  background:
+    radial-gradient(120% 85% at 28% 0%, rgba(255, 255, 255, 0.075), transparent 58%),
+    linear-gradient(180deg, #282a2f 0%, #1c1e22 46%, #131417 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),      /* borda de cima pegando luz */
+    inset 1px 0 0 rgba(255, 255, 255, 0.03),
+    inset -1px 0 0 rgba(255, 255, 255, 0.03),
+    inset 0 -2px 2px rgba(0, 0, 0, 0.55),         /* saia de baixo, na sombra */
+    0 2px 2px rgba(0, 0, 0, 0.75),                /* contato com o fundo do poço */
+    0 5px 9px -3px rgba(0, 0, 0, 0.8);
   transition: transform 70ms ease-out, box-shadow 70ms ease-out;
 }
 
@@ -280,36 +306,54 @@ body {
   place-items: center;
   width: 100%;
   height: 100%;
-  border-radius: 15%;
-  background: var(--lcd);
-  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(0, 0, 0, 0.6);
+  border-radius: 14%;
+  background: radial-gradient(130% 95% at 50% 0%, #08090b, var(--lcd) 72%);
+  box-shadow:
+    0 0 0 1px #000,                               /* moldura da tela */
+    0 0 0 2px rgba(255, 255, 255, 0.05),          /* fio de luz na moldura */
+    inset 0 1px 5px rgba(0, 0, 0, 0.95);
   overflow: hidden;
+  transition: transform 70ms ease-out, filter 120ms ease;
 }
-.lcd::after { /* reflexo do vidro sobre a tela */
+.lcd::after { /* vidro: reflexo diagonal + friso de luz no topo */
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 3;
   border-radius: inherit;
-  background: linear-gradient(155deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.02) 38%, transparent 39%);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07) 0, transparent 7%),
+    linear-gradient(155deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.02) 38%, transparent 39%);
   pointer-events: none;
 }
 .lcd img {
-  width: 66%;
-  height: 66%;
+  width: 64%;
+  height: 64%;
   object-fit: contain;
-  transition: filter 160ms ease, transform 160ms ease;
+  transition: transform 160ms ease, opacity 160ms ease;
   -webkit-user-drag: none;
 }
+/* luz de fundo: o próprio ícone, desfocado, ilumina a tela por trás (fica dentro do LCD) */
+.lcd img.halo {
+  position: absolute;
+  filter: blur(calc(var(--k) * 0.11)) saturate(1.6);
+  opacity: 0.4;
+}
+.lcd img.icon { position: relative; z-index: 1; }
 
-/* curso da tecla */
-.key:active:not(:disabled), .key.pressed {
+/* curso da tecla: a cápsula e a tela afundam; o poço fica */
+.key:active:not(:disabled)::before, .key.pressed::before {
   transform: translateY(3px);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.05),
-    0 0 0 rgba(0, 0, 0, 0.9),
-    0 1px 2px rgba(0, 0, 0, 0.8);
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.5),
+    0 0 1px rgba(0, 0, 0, 0.9);
 }
-.key:active:not(:disabled) .lcd img, .key.pressed .lcd img { filter: brightness(0.75); }
+.key:active:not(:disabled) .lcd, .key.pressed .lcd { transform: translateY(3px); filter: brightness(0.78); }
+@media (hover: hover) {
+  .key:hover:not(:disabled)::before { filter: brightness(1.12); }
+}
+.key:disabled .lcd { background: var(--lcd); }
 
 /* resposta do PC: a própria tela da tecla reage */
 .lcd .flash {
@@ -319,7 +363,8 @@ body {
   opacity: 0;
   pointer-events: none;
 }
-.key.busy .lcd img { filter: brightness(0.55); }
+.lcd .flash { z-index: 2; }
+.key.busy .lcd { filter: brightness(0.6); }
 .key.ok .flash { animation: flash-ok 650ms cubic-bezier(0.16, 1, 0.3, 1); }
 .key.err .flash { animation: flash-err 900ms cubic-bezier(0.16, 1, 0.3, 1); }
 @keyframes flash-ok {
@@ -359,6 +404,7 @@ body {
 .mini span { display: grid; place-items: center; min-width: 0; min-height: 0; }
 .mini img { width: 100%; height: 100%; object-fit: contain; }
 .folder-tab { /* marca de pasta: aba na borda de baixo da tela */
+  z-index: 1;
   position: absolute;
   left: 50%;
   bottom: 6%;
@@ -374,6 +420,7 @@ body {
 
 /* rotina: três pontos na borda de baixo; acendem em sequência enquanto os passos rodam */
 .routine-mark {
+  z-index: 1;
   position: absolute;
   left: 50%;
   bottom: 6%;
@@ -398,6 +445,7 @@ body {
 
 /* ---------- teclas vivas ---------- */
 .live-led {
+  z-index: 4; /* LED fica por cima do vidro */
   --on: #2c2f34;
   position: absolute;
   top: 8%;
@@ -414,10 +462,11 @@ body {
 }
 .key.live-on .live-led { --on: var(--ok); opacity: 1; }
 .key.live-off .live-led { opacity: 1; }
-.key.live-off .lcd > img { filter: brightness(0.8) saturate(0.85); }
+.key.live-off .lcd > img.icon { filter: brightness(0.8) saturate(0.85); }
+.key.live-off .lcd > img.halo { opacity: 0.22; }
 
 /* tocando agora: capa do álbum na tela da tecla, título embaixo */
-.np { position: absolute; inset: 0; display: none; border-radius: inherit; overflow: hidden; }
+.np { position: absolute; inset: 0; z-index: 1; display: none; border-radius: inherit; overflow: hidden; }
 .key.np-on .np { display: block; }
 .np-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: none; }
 .key.np-art-on .np-art { display: block; }
@@ -619,16 +668,61 @@ body {
 }
 .unpaired code { color: var(--text); font-family: var(--font-ui); }
 
-/* ---------- paisagem: matriz 5×3, como o aparelho deitado ---------- */
+/* ---------- paisagem: console ----------
+   Deitado, a altura é o limite. A serigrafia e a faixa LCD viram uma coluna à esquerda,
+   da mesma altura da matriz 5×3, e as teclas crescem até ocupar a altura inteira. */
 @media (orientation: landscape) {
-  .keys-area { --cols: 5; --rows: 3; }
+  .device { --pad: clamp(10px, 3vh, 18px); }
+  .keys-area {
+    --cols: 5;
+    --rows: 3;
+    --rail: clamp(150px, 22vw, 260px);
+    --rail-gap: calc(var(--gap) * 1.5);
+    --k: min(
+      (100cqh - 2 * var(--gap)) / 3,
+      (100cqw - var(--rail) - var(--rail-gap) - 4 * var(--gap)) / 5,
+      200px
+    );
+    --block-w: calc(5 * var(--k) + 4 * var(--gap));
+  }
+  .deck-block {
+    display: grid;
+    grid-template-columns: var(--rail) var(--block-w);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-areas: "head keys" "strip keys" "pages keys";
+    align-items: stretch;
+    column-gap: var(--rail-gap);
+    height: calc(3 * var(--k) + 2 * var(--gap));
+  }
+  .silkscreen {
+    grid-area: head;
+    width: auto;
+    height: auto;
+    margin: 0 0 var(--gap);
+    grid-template-columns: 1fr auto;
+    grid-template-areas: "word word" "power fs";
+    row-gap: 2px;
+  }
+  .wordmark { grid-area: word; justify-self: start; padding: 4px 0 0; }
+  .power { grid-area: power; min-height: 36px; }
+  .fs-btn { grid-area: fs; width: 40px; height: 36px; margin-right: -11px; }
+  .keys-area .strip {
+    grid-area: strip;
+    width: auto;
+    height: auto;
+    margin: 0;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+  }
+  .seg { align-content: center; padding: 6px 14px; }
+  .seg + .seg { border-left: 0; border-top: 1px solid #16181b; }
+  .keys { grid-area: keys; align-self: center; }
+  .pages { grid-area: pages; justify-content: flex-start; margin: 6px 0 0 -13px; }
+  .unpaired { grid-area: keys; align-self: center; margin: 0; }
 }
-@media (orientation: landscape) and (max-height: 500px) {
-  .device { --pad: 12px; }
-  .keys-area { --strip-h: 54px; --head-h: 30px; --head-gap: 4px; }
-  .strip-msg { padding-block: 6px; gap: 2px; }
-  .seg { row-gap: 5px; padding-block: 8px 7px; }
+@media (orientation: landscape) and (max-height: 340px) {
   .seg-detail { display: none; }
+  .seg { row-gap: 5px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
