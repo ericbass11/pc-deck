@@ -313,26 +313,51 @@ function setSeg(key, pct, detail) {
 
 const gb = (b) => (b / 1024 ** 3).toFixed(1);
 let statsTimer = null;
+let polling = false;   // uma consulta por vez
+let lastPollAt = 0;    // quando a última consulta começou (para o vigia)
 
+// Pergunta o estado ao PC a cada 2 s. Cada consulta tem prazo de 5 s: na rede do celular
+// uma requisição pode ficar pendurada para sempre, e sem prazo o laço parava (LED congelado).
 async function pollStats() {
   clearTimeout(statsTimer);
-  if (!token || document.visibilityState !== 'visible') return;
+  if (!token || document.visibilityState !== 'visible' || polling) return;
+  polling = true;
+  lastPollAt = Date.now();
+  const ctrl = new AbortController();
+  const deadline = setTimeout(() => ctrl.abort(), 5000);
   try {
-    const r = await api('/api/stats');
-    if (r.ok) {
-      const s = await r.json();
-      setSeg('cpu', s.cpu, s.cpu == null ? 'lendo…' : s.cpuCores ? `${s.cpuCores} núcleos` : '');
-      setSeg('ram', s.ram.pct, `${gb(s.ram.used)} / ${gb(s.ram.total)} GB`);
-      setSeg('gpu', s.gpu, s.gpu == null ? 'lendo…' : s.gpuName || '');
-      lastLive = s.live || {};
-      applyLive(lastLive);
-      if (deck && s.deckVersion && s.deckVersion !== deck.version) load(); // mudou no editor do PC
-    }
+    const r = await api('/api/stats', { signal: ctrl.signal });
+    if (r.status === 401) { showUnpaired(); return; }
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const s = await r.json();
+    setSeg('cpu', s.cpu, s.cpu == null ? 'lendo…' : s.cpuCores ? `${s.cpuCores} núcleos` : '');
+    setSeg('ram', s.ram.pct, `${gb(s.ram.used)} / ${gb(s.ram.total)} GB`);
+    setSeg('gpu', s.gpu, s.gpu == null ? 'lendo…' : s.gpuName || '');
+    lastLive = s.live || {};
+    applyLive(lastLive);
+    setOnline(true);
+    if (deck && s.deckVersion && s.deckVersion !== deck.version) load(); // mudou no editor do PC
   } catch {
+    // sem resposta: não mostra estado velho como se fosse atual
     ['cpu', 'ram', 'gpu'].forEach((k) => setSeg(k, null));
+    lastLive = {};
+    applyLive(lastLive);
+    setOnline(false);
+  } finally {
+    clearTimeout(deadline);
+    polling = false;
+    clearTimeout(statsTimer);
+    if (document.visibilityState === 'visible') statsTimer = setTimeout(pollStats, 2000);
   }
-  statsTimer = setTimeout(pollStats, 2000);
 }
+
+// vigia: se o laço parar por qualquer motivo, religa
+setInterval(() => {
+  if (document.visibilityState === 'visible' && Date.now() - lastPollAt > 9000) {
+    polling = false;
+    pollStats();
+  }
+}, 3000);
 
 // ---------- capturar ideia por voz ----------
 const ideaEl = $('#idea');
