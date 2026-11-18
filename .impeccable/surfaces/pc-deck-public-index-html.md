@@ -6,7 +6,7 @@ related_targets: ["pc-deck/public/style.css","pc-deck/public/app.js"]
 ---
 
 Scope: painel PWA do PC Deck (pc-deck/public). Mode: Operate. Build path: code-led.
-Audience/job: Eric toca uma tecla no celular para abrir app/site no PC; lê CPU/RAM/GPU de relance.
+Audience/job: o dono do PC toca uma tecla no celular para abrir app/site no PC; lê CPU/RAM/GPU de relance.
 States: online/offline, tecla pressionando/ok/erro, celular não pareado, monitor lendo.
 
 ## Direction contract
