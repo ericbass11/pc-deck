@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Editor · PC Deck</title>
+  <link rel="icon" href="/icon-192.png">
+  <link rel="preload" href="/fonts/barlow-condensed-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/editor.css">
+</head>
+<body class="ed">
+  <header class="ed-bar">
+    <div class="ed-brand"><span class="ed-word">PC Deck</span><span class="ed-sub">Editor</span></div>
+    <p id="ed-status" class="ed-status" role="status" aria-live="polite"></p>
+    <div class="ed-bar-actions">
+      <button id="ed-revert" class="ed-btn" type="button" disabled>Descartar</button>
+      <button id="ed-save" class="ed-btn ed-primary" type="button" disabled>Salvar</button>
+    </div>
+  </header>
+
+  <main class="ed-main">
+    <section class="ed-deck" aria-label="Teclas do deck">
+      <nav id="ed-pages" class="ed-pages" aria-label="Páginas"></nav>
+      <div id="ed-crumbs" class="ed-crumbs"></div>
+      <div id="ed-grid" class="ed-grid"></div>
+      <div class="ed-grid-actions">
+        <button id="ed-add-key" class="ed-btn" type="button">+ Tecla</button>
+        <button id="ed-add-folder" class="ed-btn" type="button">+ Pasta</button>
+      </div>
+      <p class="ed-hint">Clique numa tecla para editar. Arraste para mudar de lugar; solte em "voltar" para tirar da pasta. O celular mostra a mesma grade, em pé.</p>
+      <div id="ed-errors" class="ed-errors" hidden></div>
+    </section>
+
+    <aside id="ed-panel" class="ed-panel" aria-label="Propriedades"></aside>
+  </main>
+
+  <dialog id="ed-icons" class="ed-dialog" aria-labelledby="ed-icons-title">
+    <header class="ed-dialog-head">
+      <h2 id="ed-icons-title">Escolher ícone</h2>
+      <button class="ed-btn" type="button" data-close>Fechar</button>
+    </header>
+    <div id="ed-icons-grid" class="ed-icons-grid"></div>
+    <footer class="ed-dialog-foot">
+      <label class="ed-btn ed-file">Enviar arquivo…<input id="ed-upload" type="file" accept="image/png,image/svg+xml,image/jpeg,image/webp"></label>
+      <span class="ed-hint">PNG ou SVG quadrado, de preferência 256 px com fundo transparente.</span>
+    </footer>
+  </dialog>
+
+  <datalist id="apps-list"></datalist>
+  <datalist id="procs-list"></datalist>
+  <script src="/editor.js"></script>
+</body>
+</html>

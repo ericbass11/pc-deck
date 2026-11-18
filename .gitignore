@@ -11,3 +11,7 @@ node_modules/
 *.log
 Thumbs.db
 desktop.ini
+
+# backup e temporário do editor
+pc-deck/deck.json.bak
+pc-deck/deck.json.tmp

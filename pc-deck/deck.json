@@ -15,6 +15,11 @@
           "action": {
             "type": "app",
             "aumid": "AnthropicPBC.Claude_fnn82j28hfe8t!Claude"
+          },
+          "live": {
+            "type": "process",
+            "name": "claude",
+            "path": "AnthropicPBC.Claude"
           }
         },
         {
@@ -24,6 +29,10 @@
           "action": {
             "type": "app",
             "aumid": "OpenAI.Codex_2p2nqsd0c76g0!App"
+          },
+          "live": {
+            "type": "process",
+            "name": "ChatGPT"
           }
         },
         {
@@ -42,6 +51,10 @@
           "action": {
             "type": "app",
             "aumid": "MSTeams_8wekyb3d8bbwe!MSTeams"
+          },
+          "live": {
+            "type": "process",
+            "name": "ms-teams"
           }
         },
         {
@@ -51,6 +64,10 @@
           "action": {
             "type": "exe",
             "path": "%LOCALAPPDATA%\\Programs\\Microsoft VS Code\\Code.exe"
+          },
+          "live": {
+            "type": "process",
+            "name": "Code"
           }
         },
         {
@@ -118,6 +135,10 @@
           "action": {
             "type": "app",
             "aumid": "com.termius.mac"
+          },
+          "live": {
+            "type": "process",
+            "name": "Termius"
           }
         },
         {
@@ -127,7 +148,83 @@
           "action": {
             "type": "app",
             "aumid": "Docker.DockerForWindows.Settings"
+          },
+          "live": {
+            "type": "process",
+            "name": "Docker Desktop"
           }
+        },
+        {
+          "id": "ideia",
+          "label": "Capturar ideia",
+          "image": "/icons/ideia.svg",
+          "action": {
+            "type": "idea",
+            "file": "%USERPROFILE%\\Documents\\PC Deck\\ideias.md"
+          }
+        },
+        {
+          "id": "midia",
+          "label": "Mídia",
+          "folder": [
+            {
+              "id": "tocando",
+              "label": "Tocar ou pausar",
+              "image": "/icons/musica.svg",
+              "action": {
+                "type": "keys",
+                "keys": "media_play_pause"
+              },
+              "live": {
+                "type": "media"
+              }
+            },
+            {
+              "id": "anterior",
+              "label": "Faixa anterior",
+              "image": "/icons/anterior.svg",
+              "action": {
+                "type": "keys",
+                "keys": "media_prev"
+              }
+            },
+            {
+              "id": "proxima",
+              "label": "Próxima faixa",
+              "image": "/icons/proxima.svg",
+              "action": {
+                "type": "keys",
+                "keys": "media_next"
+              }
+            },
+            {
+              "id": "volume-menos",
+              "label": "Diminuir volume",
+              "image": "/icons/volume-menos.svg",
+              "action": {
+                "type": "keys",
+                "keys": "volume_down"
+              }
+            },
+            {
+              "id": "volume-mais",
+              "label": "Aumentar volume",
+              "image": "/icons/volume-mais.svg",
+              "action": {
+                "type": "keys",
+                "keys": "volume_up"
+              }
+            },
+            {
+              "id": "mudo",
+              "label": "Silenciar",
+              "image": "/icons/mudo.svg",
+              "action": {
+                "type": "keys",
+                "keys": "volume_mute"
+              }
+            }
+          ]
         }
       ]
     }

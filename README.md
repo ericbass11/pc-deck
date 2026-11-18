@@ -6,6 +6,17 @@ Um Stream Deck caseiro: o celular vira um painel de atalhos do PC Windows, com t
 
 - **Agente no PC:** Node puro, sem `npm install`. Executa só as ações cadastradas em `deck.json`.
 - **Painel no celular:** PWA em tela cheia, com acesso privado via Tailscale (HTTPS) e pareamento por QR code.
+- **Editor visual no PC:** monte as teclas arrastando, com lista dos apps instalados e ícones automáticos.
+
+O que as teclas fazem:
+
+- **Abrir** apps, programas e sites.
+- **Teclas vivas:** LED de app aberto e capa da música tocando.
+- **Pastas** de teclas.
+- **Capturar ideia por voz:** o texto vai para uma nota no PC (Obsidian ou `.md`).
+- **Atalhos de teclado:** combinações, mídia e volume.
+
+<p align="center"><img src=".impeccable/review/editor.png" alt="Editor do PC Deck no navegador do PC: grade de teclas à esquerda e painel de propriedades à direita" width="720"></p>
 
 Instalação e uso: [pc-deck/README.md](pc-deck/README.md).
 
@@ -13,9 +24,10 @@ Instalação e uso: [pc-deck/README.md](pc-deck/README.md).
 
 | Caminho | O que é |
 |---|---|
-| `pc-deck/server.js` | Agente local: API, monitor e execução das ações |
+| `pc-deck/server.js` | Agente local: API, monitor, teclas vivas e execução das ações |
 | `pc-deck/deck.json` | Teclas, com ícone e ação de cada uma |
-| `pc-deck/public/` | O app do celular (PWA) |
+| `pc-deck/public/` | O app do celular (PWA) e o editor (`editor.html`) |
+| `pc-deck/tools/` | Script que tira o ícone de um app do Windows |
 | `PRODUCT.md`, `DESIGN.md` | Contexto do produto e design system |
 
 ## Licença

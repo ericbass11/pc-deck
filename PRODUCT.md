@@ -19,9 +19,12 @@ Substitui o hardware Stream Deck por um PWA próprio, com ações fixas no PC (o
 Mesa de trabalho, celular em pé ao lado do monitor, olhado de relance. Agente Node local (`pc-deck/server.js`), PWA servido via `tailscale serve` em HTTPS. Botões definidos em `pc-deck/deck.json`.
 
 ## Capabilities and Constraints
-- Ações: `app` (AUMID), `exe`, `url` (Chrome/Edge). Sem comando livre.
+- Ações: `app` (AUMID), `exe`, `url` (Chrome/Edge), `keys` (atalho de teclado), `idea` (ditado gravado num .md). Sem comando livre.
+- Teclas vivas: LED de app aberto (processo) e capa/título da mídia tocando (controle de mídia do Windows).
+- Pastas de até 14 teclas; a primeira vira "voltar".
+- Editor visual só no PC (`/editar`), com lista de apps do Iniciar, ícones automáticos e validação.
 - Monitor: CPU (Node), RAM (os), GPU (contador Windows, Intel integrada).
-- Botões atuais: Claude, Codex (app OpenAI/ChatGPT), Gemini (app desktop), Microsoft Teams, VS Code, YouTube, Google, Outlook (Edge), GitHub.
+- Teclas atuais: Claude, Codex (app OpenAI/ChatGPT), Gemini (app desktop), Microsoft Teams, VS Code, YouTube, Google, Outlook (Edge), GitHub, Explorador, Ferramenta de Captura, Termius, Docker, Capturar ideia e a pasta Mídia.
 - Tela cheia: manifest `display: fullscreen`; no navegador entra no primeiro toque e há botão para alternar.
 - Sem dependências npm; sem build step.
 

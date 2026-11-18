@@ -58,6 +58,24 @@
         <p>No PC, abra <code>127.0.0.1:8787/pair</code> e escaneie o QR code com a câmera deste celular.</p>
       </section>
     </main>
+
+    <section id="idea" class="idea" hidden role="dialog" aria-modal="true" aria-labelledby="idea-title">
+      <header class="idea-head">
+        <span class="idea-led" aria-hidden="true"></span>
+        <span id="idea-title" class="idea-title">Capturar ideia</span>
+      </header>
+      <div class="idea-screen">
+        <textarea id="idea-text" class="idea-text" maxlength="4000" placeholder="Fale ou digite a ideia…" aria-describedby="idea-state"></textarea>
+        <p id="idea-state" class="idea-state" role="status" aria-live="polite"></p>
+      </div>
+      <div class="idea-actions">
+        <button id="idea-cancel" class="cap" type="button">Cancelar</button>
+        <button id="idea-mic" class="cap cap-mic" type="button" aria-pressed="false" aria-label="Ouvir">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+        </button>
+        <button id="idea-save" class="cap cap-primary" type="button">Salvar</button>
+      </div>
+    </section>
   </div>
   <script src="/app.js"></script>
 </body>

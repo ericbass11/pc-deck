@@ -1,8 +1,11 @@
 // Cache só da "casca" do app; a API sempre vai para a rede.
-const CACHE = 'pcdeck-v7';
+// Ícones novos (enviados pelo editor) entram no cache no primeiro uso, pelo fetch abaixo.
+const CACHE = 'pcdeck-v8';
 const SHELL = ['/', '/index.html', '/style.css', '/app.js', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png',
   '/icons/claude.png', '/icons/codex.png', '/icons/vscode.png', '/icons/youtube.png',
   '/icons/google.png', '/icons/outlook.png', '/icons/github.svg', '/icons/gemini.png', '/icons/teams.png', '/icons/explorer.png', '/icons/snipping.png', '/icons/termius.png', '/icons/docker.png',
+  '/icons/voltar.svg', '/icons/pasta.svg', '/icons/ideia.svg', '/icons/musica.svg', '/icons/anterior.svg', '/icons/proxima.svg',
+  '/icons/volume-menos.svg', '/icons/volume-mais.svg', '/icons/mudo.svg', '/icons/tocar-pausar.svg',
   '/fonts/barlow-condensed-500.woff2', '/fonts/barlow-condensed-600.woff2', '/fonts/barlow-condensed-700.woff2'];
 
 self.addEventListener('install', (e) => {

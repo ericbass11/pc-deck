@@ -26,7 +26,7 @@
   <script>
     const list = document.getElementById('list');
     async function load(rotate) {
-      const r = await fetch('/api/pairing' + (rotate ? '?rotate=1' : ''), { method: rotate ? 'POST' : 'GET' });
+      const r = await fetch('/api/pairing' + (rotate ? '?rotate=1' : ''), rotate ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' } : {});
       const data = await r.json();
       list.innerHTML = '';
       if (!data.urls.length) {
