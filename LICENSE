@@ -19,15 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-This license covers the PC Deck source code and original files only.
-Third-party material keeps its own terms:
-
-- Barlow Condensed font (pc-deck/public/fonts/): SIL Open Font License 1.1,
-  see pc-deck/public/fonts/OFL.txt.
-- qrcodejs (pc-deck/public/vendor/qrcode.min.js): MIT, (c) 2012 davidshimjs.
-- App and website icons (pc-deck/public/icons/): trademarks and artwork of
-  their respective owners, included only to identify each shortcut. They are
-  NOT licensed under MIT; replace them if you redistribute this project.

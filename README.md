@@ -20,7 +20,7 @@ Instalação e uso: [pc-deck/README.md](pc-deck/README.md).
 
 ## Licença
 
-Código sob a [licença MIT](LICENSE): pode usar, copiar, modificar e redistribuir à vontade, inclusive em projeto comercial, desde que mantenha o aviso de copyright. Vem sem garantia.
+Código sob a [licença MIT](LICENSE) (detalhes de terceiros em [NOTICE](NOTICE)): pode usar, copiar, modificar e redistribuir à vontade, inclusive em projeto comercial, desde que mantenha o aviso de copyright. Vem sem garantia.
 
 O que é de terceiros segue a licença original:
 
