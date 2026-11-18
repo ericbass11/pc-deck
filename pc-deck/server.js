@@ -187,7 +187,10 @@ function* walk(buttons) {
 }
 const allButtons = (deck) => deck.pages.flatMap((p) => [...walk(p.buttons)]);
 const findButton = (deck, id) => allButtons(deck).find((b) => b.id === id) || null;
-const kindOf = (b) => (Array.isArray(b.folder) ? 'folder' : b.action?.type === 'idea' ? 'idea' : 'action');
+const kindOf = (b) => (Array.isArray(b.folder) ? 'folder'
+  : b.action?.type === 'idea' ? 'idea'
+  : b.action?.type === 'routine' ? 'routine'
+  : 'action');
 
 function publicButton(b) {
   const out = { id: b.id, label: b.label, image: b.image || null, kind: kindOf(b) };
@@ -259,9 +262,36 @@ function validateDeck(deck) {
   return errs;
 }
 
-function checkAction(deck, a) {
+const MAX_STEPS = 12;
+const MAX_ROUTINE_WAIT = 30_000;
+
+function checkAction(deck, a, inRoutine = false) {
   if (!a || typeof a !== 'object') throw new Error('sem ação');
   switch (a.type) {
+    case 'routine': {
+      if (inRoutine) throw new Error('rotina não pode ter outra rotina dentro');
+      if (!Array.isArray(a.steps) || !a.steps.length || a.steps.length > MAX_STEPS) throw new Error(`rotina: use de 1 a ${MAX_STEPS} passos`);
+      let wait = 0;
+      a.steps.forEach((s, i) => {
+        const p = `rotina, passo ${i + 1}`;
+        if (!s || typeof s !== 'object') throw new Error(`${p}: passo inválido`);
+        if (s.type === 'wait') {
+          if (!Number.isInteger(s.ms) || s.ms < 0 || s.ms > 10_000) throw new Error(`${p}: a espera vai de 0 a 10 s`);
+          wait += s.ms;
+          return;
+        }
+        if (s.type === 'key') {
+          const t = findButton(deck, s.id);
+          if (!t) throw new Error(`${p}: a tecla "${s.id}" não existe mais`);
+          if (kindOf(t) !== 'action') throw new Error(`${p}: "${t.label}" não pode entrar (pasta, ideia ou rotina)`);
+          return;
+        }
+        if (s.type === 'idea') throw new Error(`${p}: captura de ideia não entra em rotina`);
+        try { checkAction(deck, s, true); } catch (e) { throw new Error(`${p}: ${e.message}`); }
+      });
+      if (wait > MAX_ROUTINE_WAIT) throw new Error('rotina: no máximo 30 s de espera somando os passos');
+      return;
+    }
     case 'app': if (!AUMID_RE.test(a.aumid || '')) throw new Error('app: AppID inválido'); return;
     case 'exe':
       if (typeof a.path !== 'string' || !a.path.trim()) throw new Error('programa: caminho vazio');
@@ -272,6 +302,9 @@ function checkAction(deck, a) {
       if (!deck.browsers?.[a.browser]) throw new Error(`site: navegador "${a.browser}" não configurado`);
       return;
     case 'keys': parseKeys(a.keys); return;
+    case 'system':
+      if (!SYSTEM_COMMANDS.includes(a.command)) throw new Error(`sistema: comando deve ser ${SYSTEM_COMMANDS.join(' ou ')}`);
+      return;
     case 'idea':
       if (typeof a.file !== 'string' || !/\.(md|txt)$/i.test(a.file.trim())) throw new Error('ideia: o arquivo deve terminar em .md ou .txt');
       return;
@@ -301,10 +334,48 @@ function runAction(deck, action) {
       return launch(deck.browsers[action.browser], [action.url]);
     case 'keys':
       return sendKeys(parseKeys(action.keys));
+    case 'routine':
+      return runRoutine(deck, action);
+    case 'system':
+      return runSystem(action.command);
     default:
       throw new Error('esta tecla não executa nada no PC');
   }
 }
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// Comandos de sistema fixos (o deck só escolhe qual, nunca o texto do comando).
+// Desbloquear não existe: o Windows isola a tela de bloqueio de qualquer programa, de propósito.
+const SYSTEM_COMMANDS = ['lock', 'sleep'];
+const SUSPEND = 'Add-Type -AssemblyName System.Windows.Forms; [void][System.Windows.Forms.Application]::SetSuspendState(\'Suspend\', $false, $false)';
+function runSystem(command) {
+  if (command === 'lock') return launch('rundll32.exe', ['user32.dll,LockWorkStation']);
+  if (command === 'sleep') {
+    // responde ao celular antes: se suspender na hora, a resposta não chega
+    setTimeout(() => {
+      launch('powershell.exe', ['-NoProfile', '-NonInteractive', '-WindowStyle', 'Hidden', '-Command', SUSPEND])
+        .catch((e) => console.error(`[${now()}] ✖ suspender: ${e.message}`));
+    }, 1500);
+    return Promise.resolve();
+  }
+  throw new Error('comando de sistema desconhecido');
+}
+
+// passos em ordem; uma pausa curta entre eles para as janelas abrirem na sequência
+async function runRoutine(deck, routine) {
+  for (const [i, step] of routine.steps.entries()) {
+    if (step.type === 'wait') { await sleep(step.ms); continue; }
+    const action = step.type === 'key' ? findButton(deck, step.id).action : step;
+    try {
+      await runAction(deck, action);
+    } catch (e) {
+      throw Object.assign(new Error(`passo ${i + 1}: ${e.message}`), { code: e.code, step: i + 1 });
+    }
+    if (i < routine.steps.length - 1) await sleep(300);
+  }
+}
+const runningRoutines = new Set();
 
 // ---------- captura de ideias ----------
 // O celular manda só o texto; o arquivo de destino é o definido no deck.json.
@@ -683,10 +754,12 @@ async function handleEditor(req, res, url) {
     case 'GET /api/editor/processes': return send(res, 200, await listProcesses());
     case 'GET /api/editor/keynames': return send(res, 200, Object.keys(VK));
     case 'POST /api/editor/test': {
-      const { action, browsers } = await readJson(req);
+      // o editor manda o deck ainda não salvo: rotinas podem apontar para teclas novas
+      const { action, deck: draft } = await readJson(req, 1024 * 1024);
       if (action?.type === 'idea') return send(res, 400, { error: 'A captura de ideia se testa pelo celular.' });
+      const ctx = draft && Array.isArray(draft.pages) && draft.browsers ? draft : loadDeck();
       try {
-        await runAction({ browsers: browsers || loadDeck().browsers }, action);
+        await runAction(ctx, action);
       } catch (e) {
         // no editor (só no PC) dá para mostrar o motivo técnico
         return send(res, 400, { error: e.code === 'ENOENT' ? 'programa não encontrado nesse caminho' : e.message });
@@ -830,17 +903,23 @@ async function handle(req, res) {
     if (req.method === 'POST' && m) {
       const button = findButton(deck, m[1]);
       if (!button) return send(res, 404, { error: 'botão não existe' });
+      const routine = kindOf(button) === 'routine';
+      if (routine && runningRoutines.has(button.id)) return send(res, 409, { error: 'Essa rotina ainda está rodando.' });
+      if (routine) runningRoutines.add(button.id);
       try {
         await runAction(deck, button.action);
-        console.log(`[${now()}] ▶ ${button.label}`);
+        console.log(`[${now()}] ▶ ${button.label}${routine ? ` (${button.action.steps.length} passos)` : ''}`);
         return send(res, 200, { ok: true });
       } catch (e) {
         console.error(`[${now()}] ✖ ${button.label}: ${e.message}`);
         // o celular recebe uma frase útil; o detalhe técnico fica no console do PC
+        const where = e.step ? `Parou no passo ${e.step}. ` : '';
         const hint = e.code === 'ENOENT'
-          ? 'O programa não foi encontrado no PC. Confira o caminho no editor.'
-          : 'Veja o erro na janela do agente no PC.';
+          ? `${where}O programa não foi encontrado no PC. Confira o caminho no editor.`
+          : `${where}Veja o erro na janela do agente no PC.`;
         return send(res, 500, { error: hint });
+      } finally {
+        if (routine) runningRoutines.delete(button.id);
       }
     }
     return send(res, 404, { error: 'rota não existe' });

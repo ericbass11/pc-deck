@@ -58,19 +58,6 @@
           }
         },
         {
-          "id": "vscode",
-          "label": "VS Code",
-          "image": "/icons/vscode.png",
-          "action": {
-            "type": "exe",
-            "path": "%LOCALAPPDATA%\\Programs\\Microsoft VS Code\\Code.exe"
-          },
-          "live": {
-            "type": "process",
-            "name": "Code"
-          }
-        },
-        {
           "id": "youtube",
           "label": "YouTube",
           "image": "/icons/youtube.png",
@@ -101,6 +88,19 @@
           }
         },
         {
+          "id": "vscode",
+          "label": "VS Code",
+          "image": "/icons/vscode.png",
+          "action": {
+            "type": "exe",
+            "path": "%LOCALAPPDATA%\\Programs\\Microsoft VS Code\\Code.exe"
+          },
+          "live": {
+            "type": "process",
+            "name": "Code"
+          }
+        },
+        {
           "id": "github",
           "label": "GitHub",
           "image": "/icons/github.svg",
@@ -108,6 +108,32 @@
             "type": "url",
             "browser": "chrome",
             "url": "https://github.com/"
+          }
+        },
+        {
+          "id": "docker",
+          "label": "Docker Desktop",
+          "image": "/icons/docker.png",
+          "action": {
+            "type": "app",
+            "aumid": "Docker.DockerForWindows.Settings"
+          },
+          "live": {
+            "type": "process",
+            "name": "Docker Desktop"
+          }
+        },
+        {
+          "id": "termius",
+          "label": "Termius",
+          "image": "/icons/termius.png",
+          "action": {
+            "type": "app",
+            "aumid": "com.termius.mac"
+          },
+          "live": {
+            "type": "process",
+            "name": "Termius"
           }
         },
         {
@@ -126,32 +152,6 @@
           "action": {
             "type": "app",
             "aumid": "Microsoft.ScreenSketch_8wekyb3d8bbwe!App"
-          }
-        },
-        {
-          "id": "termius",
-          "label": "Termius",
-          "image": "/icons/termius.png",
-          "action": {
-            "type": "app",
-            "aumid": "com.termius.mac"
-          },
-          "live": {
-            "type": "process",
-            "name": "Termius"
-          }
-        },
-        {
-          "id": "docker",
-          "label": "Docker Desktop",
-          "image": "/icons/docker.png",
-          "action": {
-            "type": "app",
-            "aumid": "Docker.DockerForWindows.Settings"
-          },
-          "live": {
-            "type": "process",
-            "name": "Docker Desktop"
           }
         },
         {
@@ -225,6 +225,73 @@
               }
             }
           ]
+        }
+      ]
+    },
+    {
+      "name": "Atalhos",
+      "buttons": [
+        {
+          "id": "comecar-o-dia",
+          "label": "Começar o dia",
+          "image": "/icons/sol.svg",
+          "action": {
+            "type": "routine",
+            "steps": [
+              {
+                "type": "key",
+                "id": "outlook"
+              },
+              {
+                "type": "key",
+                "id": "teams"
+              },
+              {
+                "type": "key",
+                "id": "claude"
+              }
+            ]
+          }
+        },
+        {
+          "id": "modo-codigo",
+          "label": "Modo código",
+          "image": "/icons/codigo.svg",
+          "action": {
+            "type": "routine",
+            "steps": [
+              {
+                "type": "key",
+                "id": "docker"
+              },
+              {
+                "type": "key",
+                "id": "vscode"
+              },
+              {
+                "type": "key",
+                "id": "termius"
+              }
+            ]
+          }
+        },
+        {
+          "id": "bloquear",
+          "label": "Bloquear a tela",
+          "image": "/icons/cadeado.svg",
+          "action": {
+            "type": "system",
+            "command": "lock"
+          }
+        },
+        {
+          "id": "suspender",
+          "label": "Suspender o PC",
+          "image": "/icons/lua.svg",
+          "action": {
+            "type": "system",
+            "command": "sleep"
+          }
         }
       ]
     }

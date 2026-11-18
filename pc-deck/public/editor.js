@@ -113,6 +113,7 @@ function face(b) {
     lcd.append(h('span', { class: 'lcd-label', text: b.label }));
   }
   if (isFolder(b)) lcd.append(h('span', { class: 'folder-tab' }));
+  if (b.action?.type === 'routine') lcd.append(h('span', { class: 'routine-mark' }, h('i'), h('i'), h('i')));
   if (b.live) lcd.append(h('span', { class: `ed-live-tag ed-live-${b.live.type}`, title: 'Tecla viva' }));
   return lcd;
 }
@@ -281,6 +282,8 @@ const ACTION_TYPES = [
   ['url', 'Abrir site'],
   ['exe', 'Abrir programa (.exe)'],
   ['keys', 'Atalho de teclado'],
+  ['routine', 'Rotina (várias ações em sequência)'],
+  ['system', 'Sistema: bloquear ou suspender o PC'],
   ['idea', 'Capturar ideia por voz'],
   ['folder', 'Pasta de teclas'],
 ];
@@ -292,7 +295,87 @@ function defaultAction(type) {
     case 'url': return { type, browser: Object.keys(deck.browsers)[0] || 'chrome', url: 'https://' };
     case 'keys': return { type, keys: '' };
     case 'idea': return { type, file: IDEA_FILE };
+    case 'routine': return { type, steps: [] };
+    case 'system': return { type, command: 'lock' };
   }
+}
+
+// teclas que uma rotina pode apertar: as que executam algo direto (não pasta, ideia ou outra rotina)
+function routineTargets(self) {
+  const out = [];
+  const visit = (list, trail) => {
+    for (const b of list) {
+      if (isFolder(b)) { visit(b.folder, [...trail, b.label]); continue; }
+      if (b === self || ['idea', 'routine'].includes(b.action?.type)) continue;
+      out.push({ id: b.id, label: trail.length ? `${b.label} (${trail.join(' › ')})` : b.label });
+    }
+  };
+  deck.pages.forEach((p) => visit(p.buttons, deck.pages.length > 1 ? [p.name] : []));
+  return out;
+}
+
+const STEP_TYPES = [['key', 'Apertar tecla do deck'], ['wait', 'Esperar'], ['keys', 'Atalho de teclado'], ['url', 'Abrir site']];
+
+function routineFields(b) {
+  const a = b.action;
+  const targets = routineTargets(b);
+  const box = h('div', { class: 'ed-steps' });
+  const restep = () => { renderPanel(); light(); };
+
+  a.steps.forEach((s, i) => {
+    const types = STEP_TYPES.some(([t]) => t === s.type) ? STEP_TYPES : [...STEP_TYPES, [s.type, `Outro (${s.type})`]];
+    const typeSel = select(types, s.type, (t) => {
+      a.steps[i] = t === 'key' ? { type: 'key', id: targets[0]?.id || '' }
+        : t === 'wait' ? { type: 'wait', ms: 1000 }
+        : t === 'keys' ? { type: 'keys', keys: '' }
+        : { type: 'url', browser: Object.keys(deck.browsers)[0] || 'chrome', url: 'https://' };
+      restep();
+    }, { 'aria-label': `Tipo do passo ${i + 1}` });
+
+    let detail = null;
+    if (s.type === 'key') {
+      const opts = targets.map((t) => [t.id, t.label]);
+      if (!targets.some((t) => t.id === s.id)) opts.unshift([s.id || '', s.id ? `"${s.id}" (não existe mais)` : 'Escolha a tecla…']);
+      detail = select(opts, s.id || '', (v) => { s.id = v; light(); }, { 'aria-label': `Tecla do passo ${i + 1}` });
+    } else if (s.type === 'wait') {
+      detail = h('div', { class: 'ed-row ed-wait' },
+        h('input', { type: 'number', min: '0', max: '10', step: '0.5', value: String(s.ms / 1000), 'aria-label': `Segundos do passo ${i + 1}`,
+          oninput: (e) => { s.ms = Math.round(Math.max(0, Math.min(10, Number(e.target.value) || 0)) * 1000); light(); } }),
+        h('span', { class: 'ed-hint', text: 'segundos' }));
+    } else if (s.type === 'keys') {
+      detail = input(Array.isArray(s.keys) ? s.keys.join(', ') : s.keys, (v) => {
+        const parts = v.split(',').map((x) => x.trim().toLowerCase()).filter(Boolean);
+        s.keys = parts.length > 1 ? parts : parts[0] || '';
+        light();
+      }, { placeholder: 'ctrl+shift+m', 'aria-label': `Atalho do passo ${i + 1}` });
+    } else if (s.type === 'url') {
+      detail = h('div', { class: 'ed-row' },
+        input(s.url, (v) => { s.url = v.trim(); light(); }, { type: 'url', 'aria-label': `Endereço do passo ${i + 1}` }),
+        select(Object.keys(deck.browsers).map((k) => [k, k]), s.browser, (v) => { s.browser = v; light(); }, { 'aria-label': `Navegador do passo ${i + 1}` }));
+    } else {
+      detail = h('p', { class: 'ed-hint', text: 'Passo editado à mão no deck.json.' });
+    }
+
+    const move = (d) => { const [x] = a.steps.splice(i, 1); a.steps.splice(i + d, 0, x); restep(); };
+    box.append(h('div', { class: 'ed-step' },
+      h('span', { class: 'ed-step-n', text: String(i + 1) }),
+      h('div', { class: 'ed-step-body' }, typeSel, detail),
+      h('div', { class: 'ed-step-tools' },
+        h('button', { type: 'button', class: 'ed-icon-btn', 'aria-label': `Subir passo ${i + 1}`, text: '↑', disabled: i === 0, onclick: () => move(-1) }),
+        h('button', { type: 'button', class: 'ed-icon-btn', 'aria-label': `Descer passo ${i + 1}`, text: '↓', disabled: i === a.steps.length - 1, onclick: () => move(1) }),
+        h('button', { type: 'button', class: 'ed-icon-btn ed-danger', 'aria-label': `Remover passo ${i + 1}`, text: '×', onclick: () => { a.steps.splice(i, 1); restep(); } }))));
+  });
+
+  if (!a.steps.length) box.append(h('p', { class: 'ed-hint', text: 'Nenhum passo ainda. Comece apertando teclas que já existem no deck.' }));
+  box.append(h('div', { class: 'ed-row' },
+    h('button', { type: 'button', class: 'ed-btn', text: '+ Passo', disabled: a.steps.length >= 12, onclick: () => {
+      a.steps.push(targets.length ? { type: 'key', id: targets[0].id } : { type: 'wait', ms: 1000 });
+      restep();
+    } }),
+    h('button', { type: 'button', class: 'ed-btn', text: '+ Espera', disabled: a.steps.length >= 12, onclick: () => { a.steps.push({ type: 'wait', ms: 1500 }); restep(); } })));
+
+  panel.append(h('div', { class: 'ed-field' }, h('label', { text: 'Passos' }), box,
+    h('p', { class: 'ed-hint', text: 'Rodam em ordem, com uma pausa curta entre eles. Use "Esperar" antes de um atalho de teclado para dar tempo do app abrir. Até 12 passos e 30 s de espera somados.' })));
 }
 
 function keyPanel(b, list) {
@@ -322,6 +405,7 @@ function keyPanel(b, list) {
       }
       b.action = defaultAction(type);
       if (type !== 'keys' && b.live?.type === 'media') delete b.live;
+      if (type === 'routine' || type === 'system') delete b.live;
     }
     renderPanel();
     light();
@@ -333,14 +417,16 @@ function keyPanel(b, list) {
       h('button', { type: 'button', class: 'ed-btn', text: 'Abrir pasta', onclick: () => openFolder(b) })));
   } else {
     actionFields(b);
-    liveFields(b);
+    if (kind !== 'routine' && kind !== 'system') liveFields(b);
   }
 
   // ações da tecla
   const row = h('div', { class: 'ed-row' });
   if (kind !== 'folder' && kind !== 'idea') {
     row.append(h('button', { type: 'button', class: 'ed-btn', text: 'Testar no PC', onclick: async () => {
-      try { await call('/api/editor/test', { action: b.action, browsers: deck.browsers }); status(`"${b.label}" funcionou no PC.`, 'ok'); }
+      if (kind === 'system' && !confirm(b.action.command === 'sleep' ? 'Isso vai suspender o PC agora. Continuar?' : 'Isso vai bloquear a tela do PC agora. Continuar?')) return;
+      if (kind === 'routine') status(`Rodando "${b.label}"…`);
+      try { await call('/api/editor/test', { action: b.action, deck }); status(`"${b.label}" funcionou no PC.`, 'ok'); }
       catch (e) { status(e.message === 'erro interno' ? 'Não funcionou: veja a janela do agente.' : `Não funcionou: ${e.message}`, 'err'); }
     } }));
   }
@@ -409,6 +495,13 @@ function actionFields(b) {
     panel.append(field('Arquivo de ideias', input(a.file, (v) => { a.file = v; light(); }),
       'Cada ideia vira uma linha com data e hora. Pode ser uma nota do seu cofre do Obsidian (.md).'));
     panel.append(h('p', { class: 'ed-hint', text: 'No celular, a tecla abre o ditado: fale, revise e toque em Salvar. O ditado do Chrome usa o serviço de voz do Google.' }));
+  } else if (a.type === 'routine') {
+    routineFields(b);
+  } else if (a.type === 'system') {
+    panel.append(field('Comando', select([['lock', 'Bloquear a tela'], ['sleep', 'Suspender o PC']], a.command, (v) => { a.command = v; light(); }),
+      a.command === 'sleep'
+        ? 'O PC suspende 1,5 s depois do toque. Enquanto ele dorme o celular fica offline; para acordar, use o teclado, o mouse ou o botão do PC.'
+        : 'Bloqueia como o Win+L. Desbloquear pelo celular não é possível: o Windows isola a tela de bloqueio de qualquer programa, de propósito.'));
   }
 }
 

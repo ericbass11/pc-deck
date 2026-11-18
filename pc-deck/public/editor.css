@@ -157,6 +157,46 @@ body.ed {
 
 .ed-grid-actions { display: flex; gap: 10px; margin-top: 18px; }
 
+/* ---------- passos da rotina ---------- */
+.ed-steps { display: grid; gap: 8px; }
+.ed-step {
+  display: grid;
+  grid-template-columns: 26px 1fr auto;
+  gap: 10px;
+  align-items: start;
+  padding: 10px;
+  border: 1px solid #1d2024;
+  border-radius: 12px;
+  background: #08090a;
+}
+.ed-step-n {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  margin-top: 6px;
+  border-radius: 50%;
+  background: #17191c;
+  color: var(--print);
+  font: 600 13px/1 var(--font-print);
+}
+.ed-step-body { display: grid; gap: 6px; min-width: 0; }
+.ed-step-tools { display: flex; gap: 4px; margin-top: 4px; }
+.ed-icon-btn {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 8px;
+  background: #17191c;
+  color: var(--print);
+  font: 600 15px/1 var(--font-ui);
+  cursor: pointer;
+}
+.ed-icon-btn:disabled { opacity: 0.3; cursor: default; }
+.ed-icon-btn:focus-visible { outline: 2px solid var(--print); outline-offset: 1px; }
+.ed-wait input { flex: 0 0 90px; width: 90px; min-width: 0; }
+.ed-wait .ed-hint { margin: 0; }
+
 .ed-hint { margin: 8px 0 0; color: var(--print-dim); font-size: 13px; line-height: 1.45; }
 .ed-hint[data-tone="err"] { color: var(--err); }
 

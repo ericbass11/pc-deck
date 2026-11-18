@@ -15,6 +15,8 @@ O que as teclas fazem:
 - **Pastas** de teclas.
 - **Capturar ideia por voz:** o texto vai para uma nota no PC (Obsidian ou `.md`).
 - **Atalhos de teclado:** combinações, mídia e volume.
+- **Rotinas:** uma tecla roda vários passos ("Começar o dia" abre Outlook, Teams e Claude).
+- **Sistema:** bloquear a tela e suspender o PC.
 
 <p align="center"><img src=".impeccable/review/editor.png" alt="Editor do PC Deck no navegador do PC: grade de teclas à esquerda e painel de propriedades à direita" width="720"></p>
 

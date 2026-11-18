@@ -371,6 +371,29 @@ body {
   transform: translateX(-50%);
 }
 .key[data-kind="back"] .lcd img { width: 44%; height: 44%; }
+
+/* rotina: três pontos na borda de baixo; acendem em sequência enquanto os passos rodam */
+.routine-mark {
+  position: absolute;
+  left: 50%;
+  bottom: 6%;
+  display: flex;
+  gap: 5%;
+  width: 26%;
+  justify-content: center;
+  transform: translateX(-50%);
+}
+.routine-mark i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--print-dim);
+  opacity: 0.55;
+}
+.key.busy[data-kind="routine"] .routine-mark i { animation: step 0.9s ease-in-out infinite; background: var(--ok); }
+.key.busy[data-kind="routine"] .routine-mark i:nth-child(2) { animation-delay: 0.3s; }
+.key.busy[data-kind="routine"] .routine-mark i:nth-child(3) { animation-delay: 0.6s; }
+@keyframes step { 0%, 100% { opacity: 0.25; } 30% { opacity: 1; } }
 .wordmark.in-folder { letter-spacing: 0.16em; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* ---------- teclas vivas ---------- */
@@ -612,4 +635,5 @@ body {
   .key, .lcd img, .seg-bar span, .cap, .live-led { transition: none; }
   .key.ok .flash, .key.err .flash { animation-duration: 1ms; }
   .idea[data-mode="rec"] .idea-led { animation: none; }
+  .key.busy[data-kind="routine"] .routine-mark i { animation: none; opacity: 1; }
 }

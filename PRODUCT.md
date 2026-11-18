@@ -19,7 +19,7 @@ Substitui o hardware Stream Deck por um PWA próprio, com ações fixas no PC (o
 Mesa de trabalho, celular em pé ao lado do monitor, olhado de relance. Agente Node local (`pc-deck/server.js`), PWA servido via `tailscale serve` em HTTPS. Botões definidos em `pc-deck/deck.json`.
 
 ## Capabilities and Constraints
-- Ações: `app` (AUMID), `exe`, `url` (Chrome/Edge), `keys` (atalho de teclado), `idea` (ditado gravado num .md). Sem comando livre.
+- Ações: `app` (AUMID), `exe`, `url` (Chrome/Edge), `keys` (atalho de teclado), `idea` (ditado gravado num .md), `routine` (passos em sequência), `system` (bloquear/suspender). Sem comando livre; desbloquear a tela é impossível por design do Windows.
 - Teclas vivas: LED de app aberto (processo) e capa/título da mídia tocando (controle de mídia do Windows).
 - Pastas de até 14 teclas; a primeira vira "voltar".
 - Editor visual só no PC (`/editar`), com lista de apps do Iniciar, ícones automáticos e validação.

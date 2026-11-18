@@ -149,7 +149,7 @@ function makeKey(btn) {
   if (btn) {
     el.dataset.id = btn.id;
     el.dataset.kind = btn.kind;
-    el.setAttribute('aria-label', btn.kind === 'folder' ? `Pasta ${btn.label}` : btn.label);
+    el.setAttribute('aria-label', btn.kind === 'folder' ? `Pasta ${btn.label}` : btn.kind === 'routine' ? `Rotina ${btn.label}` : btn.label);
     el.title = btn.label;
 
     if (btn.kind === 'folder' && !btn.image) lcd.append(folderFace(btn));
@@ -161,6 +161,7 @@ function makeKey(btn) {
       lcd.append(t);
     }
     if (btn.kind === 'folder') lcd.insertAdjacentHTML('beforeend', '<span class="folder-tab" aria-hidden="true"></span>');
+    if (btn.kind === 'routine') lcd.insertAdjacentHTML('beforeend', '<span class="routine-mark" aria-hidden="true"><i></i><i></i><i></i></span>');
 
     if (btn.live) {
       el.dataset.live = btn.live;

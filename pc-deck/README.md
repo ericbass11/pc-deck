@@ -80,6 +80,26 @@ A tecla abre uma tela de ditado: fale, revise o texto e toque em **Salvar**. A i
 
 O ditado usa o reconhecimento de voz do Chrome (que envia o áudio ao serviço do Google) e precisa de HTTPS, o que já acontece via Tailscale. Sem ditado, dá para digitar, inclusive com o microfone do teclado do celular. O celular manda só o texto; o arquivo de destino é fixo no PC.
 
+### Rotinas
+
+Uma tecla roda vários passos em sequência: "Começar o dia" abre o Outlook, o Teams e o Claude; "Modo código" abre o Docker, o VS Code e o Termius. Cada passo pode apertar uma tecla que já existe no deck, esperar (até 10 s), enviar um atalho de teclado ou abrir um site. No celular, a tecla de rotina tem três pontinhos embaixo, que acendem em sequência enquanto ela roda.
+
+```json
+{ "type": "routine", "steps": [
+  { "type": "key", "id": "teams" },
+  { "type": "wait", "ms": 3000 },
+  { "type": "keys", "keys": "ctrl+shift+m" }
+] }
+```
+
+Limites: 12 passos e 30 s de espera somados. Uma rotina não pode conter outra rotina, uma pasta ou a captura de ideia. Se um passo falhar, ela para ali e o celular diz em qual passo foi. Tocar de novo enquanto ela roda não dispara uma segunda vez.
+
+### Bloquear e suspender o PC
+
+`{ "type": "system", "command": "lock" }` bloqueia a tela (como o Win+L). `"sleep"` suspende o PC 1,5 s depois do toque, tempo para o celular receber a confirmação. Enquanto o PC dorme, o celular fica offline; para acordar, use o teclado, o mouse ou o botão do PC.
+
+Desbloquear pelo celular não existe, e é de propósito: o Windows isola a tela de bloqueio de qualquer programa, para que nada digite a senha ou o PIN por você.
+
 ### Atalhos de teclado
 
 A tecla aperta uma combinação no PC, na janela que estiver em foco: `ctrl+shift+m` (microfone do Teams), `win+shift+s` (recorte), teclas de mídia e volume. Para uma sequência, use uma lista: `["win+r", "enter"]`. O editor grava a combinação direto do teclado do PC.
@@ -97,6 +117,8 @@ O Windows não deixa um programa comum mandar teclas para janelas abertas como a
 | `url`  | `browser`, `url`          | `browser` = chave de `browsers` (`chrome`, `edge`)     |
 | `keys` | `keys`                    | `"ctrl+shift+m"` ou `["win+r", "enter"]`               |
 | `idea` | `file`                    | `"%USERPROFILE%\\Documents\\PC Deck\\ideias.md"`       |
+| `routine` | `steps`                | passos `key`, `wait`, `keys`, `url` (veja Rotinas)     |
+| `system` | `command`               | `"lock"` (bloquear) ou `"sleep"` (suspender)           |
 
 Cada tecla tem `id` (único no deck), `label` (para leitor de tela e para teclas sem ícone) e `image` opcional, um PNG/JPG/WEBP/SVG em `public/icons/`, de preferência 256 px com fundo transparente. Em vez de `action`, uma tecla pode ter `folder` (pasta). O deck tem 15 teclas por página (3×5 em pé, 5×3 deitado); com mais de uma página, aparecem pontos para trocar.
 
