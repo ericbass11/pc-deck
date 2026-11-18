@@ -18,7 +18,16 @@ Instalação e uso: [pc-deck/README.md](pc-deck/README.md).
 | `pc-deck/public/` | O app do celular (PWA) |
 | `PRODUCT.md`, `DESIGN.md` | Contexto do produto e design system |
 
-## Créditos
+## Licença
 
-- Fonte Barlow Condensed (SIL Open Font License 1.1): veja `pc-deck/public/fonts/OFL.txt`.
-- Os ícones de apps e sites são marcas dos respectivos donos. Estão aqui só para identificar os atalhos.
+Código sob a [licença MIT](LICENSE): pode usar, copiar, modificar e redistribuir à vontade, inclusive em projeto comercial, desde que mantenha o aviso de copyright. Vem sem garantia.
+
+O que é de terceiros segue a licença original:
+
+| Material | Licença |
+|---|---|
+| Fonte Barlow Condensed (`pc-deck/public/fonts/`) | SIL Open Font License 1.1 ([OFL.txt](pc-deck/public/fonts/OFL.txt)) |
+| qrcodejs (`pc-deck/public/vendor/`) | MIT, (c) 2012 davidshimjs |
+| Ícones de apps e sites (`pc-deck/public/icons/`) | Marcas dos respectivos donos, **fora da MIT**. Estão aqui só para identificar cada atalho; troque-os se for redistribuir o projeto. |
+
+Projeto pessoal, sem vínculo com Elgato, Anthropic, OpenAI, Google, Microsoft, GitHub, Docker ou Termius.
