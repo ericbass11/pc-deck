@@ -47,9 +47,19 @@ No PC, abra **`http://127.0.0.1:8787/editar`**. O editor só abre no próprio PC
 - **Testar no PC** roda a ação na hora, antes de salvar.
 - **Salvar** (ou `Ctrl+S`) valida tudo e grava o `deck.json`. A versão anterior fica em `deck.json.bak`. O celular percebe a mudança em até 2 s.
 
-## 5. Iniciar junto com o Windows (opcional)
+## 5. Iniciar junto com o Windows
 
-`Win+R` → `shell:startup` → crie um atalho para `start.cmd` (dá para marcar "Executar: Minimizada").
+Deixe a pasta do PC Deck num lugar fixo (por exemplo `%LOCALAPPDATA%\PCDeck`) e rode, uma vez, de dentro dela:
+
+```bat
+powershell -ExecutionPolicy Bypass -File tools\autostart.ps1 install
+powershell -ExecutionPolicy Bypass -File tools\autostart.ps1 start
+```
+
+A partir daí o agente liga sozinho no login, sem janela, e volta em poucos segundos se cair (`start-service.cmd`). O registro fica em `agent.log`, na mesma pasta. O `tailscale serve --bg` já sobrevive ao reinício do PC, então não precisa repetir.
+
+- Ver se está rodando: `tools\autostart.ps1 status`
+- Desligar e remover: `tools\autostart.ps1 uninstall`
 
 ## Recursos
 
