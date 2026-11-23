@@ -15,3 +15,6 @@ desktop.ini
 # backup e temporário do editor
 pc-deck/deck.json.bak
 pc-deck/deck.json.tmp
+
+# lançador gerado pelo autostart.ps1
+pc-deck/tools/run-hidden.vbs

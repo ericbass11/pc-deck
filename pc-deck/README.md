@@ -56,7 +56,9 @@ powershell -ExecutionPolicy Bypass -File tools\autostart.ps1 install
 powershell -ExecutionPolicy Bypass -File tools\autostart.ps1 start
 ```
 
-A partir daí o agente liga sozinho no login, sem janela, e volta em poucos segundos se cair (`start-service.cmd`). O registro fica em `agent.log`, na mesma pasta. O `tailscale serve --bg` já sobrevive ao reinício do PC, então não precisa repetir.
+A partir daí uma tarefa do Agendador de Tarefas ("PC Deck") liga o agente sem janela no login, ao desbloquear a tela (volta da suspensão ou hibernação) e a cada 5 minutos como garantia; ela nunca abre uma segunda cópia, e o `start-service.cmd` religa o agente em segundos se ele cair.
+
+> Fora de `AppData` porque apps empacotados (como o app desktop do Claude) desviam o que gravam ali para uma cópia particular, que o Windows não enxerga no login. O registro fica em `agent.log`, na mesma pasta. O `tailscale serve --bg` já sobrevive ao reinício do PC, então não precisa repetir.
 
 - Ver se está rodando: `tools\autostart.ps1 status`
 - Desligar e remover: `tools\autostart.ps1 uninstall`

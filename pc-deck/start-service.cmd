@@ -4,6 +4,9 @@ rem Usado pela inicializacao automatica (tools\autostart.ps1). Para uso manual, 
 setlocal
 cd /d "%~dp0"
 
+rem ja tem um agente ouvindo na porta? entao nao abre outro (a tarefa roda no login, ao desbloquear e a cada 5 min)
+netstat -ano -p TCP | findstr /R /C:"127\.0\.0\.1:8787 .*LISTENING" /C:"0\.0\.0\.0:8787 .*LISTENING" >nul && exit /b 0
+
 :loop
 rem log com no maximo ~1 MB (guarda a versao anterior em agent.old.log)
 if exist agent.log for %%A in (agent.log) do if %%~zA GTR 1048576 move /y agent.log agent.old.log >nul
