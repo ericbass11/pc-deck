@@ -24,7 +24,7 @@ const KEYS_PER_PAGE = 15;   // matriz 3×5
 const KEYS_PER_FOLDER = 14; // a primeira tecla da pasta é "voltar"
 const MAX_FOLDER_DEPTH = 3;
 
-const now = () => new Date().toLocaleTimeString();
+const now = () => new Date().toLocaleString('pt-BR');
 const httpError = (status, message) => Object.assign(new Error(message), { status });
 
 // ---------- token de pareamento ----------
@@ -808,11 +808,28 @@ function serveStatic(req, res) {
   });
 }
 
+// Endereço do Tailscale para o QR de pareamento. No login o Tailscale pode ainda não estar pronto,
+// então tenta de novo (a cada 30 s e sempre que a página de pareamento pede) até achar.
 let tailscaleHost = null;
-execFile('tailscale', ['status', '--json'], { windowsHide: true }, (err, out) => {
-  if (err) return;
-  try { tailscaleHost = JSON.parse(out).Self.DNSName.replace(/\.$/, ''); } catch {}
-});
+const TAILSCALE_EXE = ['tailscale', 'C:\\Program Files\\Tailscale\\tailscale.exe'];
+function findTailscaleHost() {
+  if (tailscaleHost) return Promise.resolve(tailscaleHost);
+  const tryExe = (i) => new Promise((resolve) => {
+    if (i >= TAILSCALE_EXE.length) return resolve(null);
+    execFile(TAILSCALE_EXE[i], ['status', '--json'], { windowsHide: true, timeout: 5000 }, (err, out) => {
+      if (err) return resolve(tryExe(i + 1));
+      try {
+        const name = JSON.parse(out).Self.DNSName.replace(/\.$/, '');
+        if (name) { tailscaleHost = name; console.log(`[${now()}] Tailscale encontrado: https://${name}`); }
+      } catch {}
+      resolve(tailscaleHost);
+    });
+  });
+  return tryExe(0);
+}
+findTailscaleHost();
+const tailscaleRetry = setInterval(() => { if (tailscaleHost) clearInterval(tailscaleRetry); else findTailscaleHost(); }, 30_000);
+tailscaleRetry.unref();
 
 function lanAddresses() {
   return Object.values(os.networkInterfaces()).flat()
@@ -826,6 +843,8 @@ function pairingUrls() {
   if (LAN) for (const ip of lanAddresses()) urls.push({ label: `Rede local ${ip} (HTTP)`, url: `http://${ip}:${PORT}/#t=${TOKEN}` });
   return urls;
 }
+
+let lastPhoneSeen = 0;
 
 const server = http.createServer((req, res) => {
   handle(req, res).catch((e) => {
@@ -857,6 +876,7 @@ async function handle(req, res) {
       fs.rmSync(TOKEN_FILE, { force: true });
       TOKEN = loadToken();
     }
+    await findTailscaleHost();
     return send(res, 200, { urls: pairingUrls(), lan: LAN, port: PORT });
   }
   if (url.pathname.startsWith('/api/editor/')) return handleEditor(req, res, url);
@@ -867,6 +887,13 @@ async function handle(req, res) {
       await new Promise((r) => setTimeout(r, 400)); // freia tentativa de força bruta
       return send(res, 401, { error: 'não pareado' });
     }
+    // registro de presença: anota quando um celular aparece depois de 1 min sem contato
+    if (Date.now() - lastPhoneSeen > 60_000) {
+      const via = req.headers['tailscale-user-login'] || req.headers['x-forwarded-for'] ? 'Tailscale' : 'rede local';
+      console.log(`[${now()}] 📱 celular conectado (${via})`);
+    }
+    lastPhoneSeen = Date.now();
+
     let deck;
     try { deck = loadDeck(); } catch (e) { return send(res, 500, { error: `deck.json inválido: ${e.message}` }); }
 
