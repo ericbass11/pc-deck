@@ -60,6 +60,8 @@ A partir daí uma tarefa do Agendador de Tarefas ("PC Deck") liga o agente sem j
 
 > Fora de `AppData` porque apps empacotados (como o app desktop do Claude) desviam o que gravam ali para uma cópia particular, que o Windows não enxerga no login. O registro fica em `agent.log`, na mesma pasta. O `tailscale serve --bg` já sobrevive ao reinício do PC, então não precisa repetir.
 
+**Tailscale no login:** no modo padrão do Windows, o Tailscale só conecta quando o app da bandeja abre, e o Windows pode levar minutos para abri-lo depois do login. Nesse intervalo o agente está no ar, mas o celular vê "offline". Por isso o `start-service.cmd` também abre o app do Tailscale se ele estiver fechado (anotado em `service.log`). Para conectar já no boot, antes até do login, ligue o modo sem supervisão do Tailscale ("Run unattended").
+
 - Ver se está rodando: `tools\autostart.ps1 status`
 - Desligar e remover: `tools\autostart.ps1 uninstall`
 

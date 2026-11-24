@@ -4,6 +4,16 @@ rem Usado pela inicializacao automatica (tools\autostart.ps1). Para uso manual, 
 setlocal
 cd /d "%~dp0"
 
+rem Tailscale no modo padrao so conecta quando o app da bandeja abre, e o Windows o abre
+rem minutos depois do login. Abre ja, se estiver instalado e ainda fechado.
+set "TS_IPN=%ProgramFiles%\Tailscale\tailscale-ipn.exe"
+if exist "%TS_IPN%" (
+  tasklist /FI "IMAGENAME eq tailscale-ipn.exe" /NH | find /I "tailscale-ipn.exe" >nul || (
+    echo [%date% %time%] abrindo o Tailscale>> service.log
+    start "" "%TS_IPN%"
+  )
+)
+
 rem ja tem um agente ouvindo na porta? entao nao abre outro (a tarefa roda no login, ao desbloquear e a cada 5 min)
 netstat -ano -p TCP | findstr /R /C:"127\.0\.0\.1:8787 .*LISTENING" /C:"0\.0\.0\.0:8787 .*LISTENING" >nul && exit /b 0
 
